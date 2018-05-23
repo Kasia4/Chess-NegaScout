@@ -1,3 +1,5 @@
+package chess.board
+
 case class Point(x: Int, y: Int)
 
 def +(p1: Point, p2: Point): Point = {
