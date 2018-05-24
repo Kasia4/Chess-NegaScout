@@ -20,24 +20,25 @@ case object Knight extends PieceType {
 
 case object Bishop extends PieceType {
   val name = "Bishop"
-  val symbol = "B"
+  val symbol = 'B'
   val promotable = true
 }
 
 case object Rook extends PieceType {
   val name = "Rook"
-  val symbol = "R"
+  val symbol = 'R'
   val promotable = true
 }
 
 case object Queen extends PieceType {
   val name = "Queen"
-  val symbol = "Q"
+  val symbol = 'Q'
   val promotable = true
 }
 
 case object King extends PieceType {
   val name = "King"
-  val symbol = "K"
+  val symbol = 'K'
   val promotable = false
 }
+
