@@ -1,6 +1,16 @@
 package chess.board
 
 case class Point(x: Int, y: Int) {
+
+  val right     = Point(1,0)
+  val left      = Point(-1,0)
+  val up        = Point(0,1)
+  val down      = Point(0,-1)
+  val upRight   = Point(1,1)
+  val upLeft    = Point(-1,1)
+  val downRight = Point(1,-1)
+  val downLeft  = Point(-1,-1)
+
   def +(other: Point): Point = {
     Point(this.x + other.x, this.y + other.y)
   }
