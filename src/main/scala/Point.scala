@@ -16,4 +16,8 @@ case class Point(x: Int, y: Int) {
   def flipY(): Point = {
     Point(this.x, -this.y)
   }
+
+  def onSameLine(other: Point): Boolean = this.x == other.x || this.y == other.y
+  def onSameDiagonal(other: Point): Boolean = this.y - this.x == other.y - other.x ||  this.y + this.x == other.y + other.x
 }
+
