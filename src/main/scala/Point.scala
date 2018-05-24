@@ -10,7 +10,7 @@ case class Point(x: Int, y: Int) {
   }
 
   def flipX(): Point = {
-    Point(-this.x, this.x)
+    Point(-this.x, this.y)
   }
 
   def flipY(): Point = {
