@@ -1,7 +1,10 @@
 package chess.board
 
-trait Piece {
-  def moves(): List[Point]
-  def toChar(): Char
-}
+abstract class Piece() {
+  val position: Point
+  val moved: Boolean
 
+  def moves(): List[Point]
+  def captures(): List[Point]
+  def toChar: Char
+}
