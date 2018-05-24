@@ -58,4 +58,20 @@ class PointTest extends org.scalatest.FunSuite {
     val p2 = Point(2,3)
     assert(!p1.onSameDiagonal(p2))
   }
+
+  test("distX returns distance between two points on X axis") {
+    val p1 = Point(1,1)
+    val p2 = Point(8,1)
+    assert(p1.distX(p2) == 7)
+    assert(p2.distX(p1) == 7)
+  }
+
+  test("distY returns distance between two points on Y axis") {
+    val p1 = Point(3,1)
+    val p2 = Point(3,5)
+    assert(p1.distY(p2) == 4)
+    assert(p2.distY(p1) == 4)
+  }
+
+
 }
