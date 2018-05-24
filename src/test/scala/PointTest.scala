@@ -73,5 +73,21 @@ class PointTest extends org.scalatest.FunSuite {
     assert(p2.distY(p1) == 4)
   }
 
+  test("adjoin test") {
+    val p1 = Point(1,1)
+    assert(p1.adjoin(Point(1,2)))
+    assert(p1.adjoin(Point(2,1)))
+    assert(p1.adjoin(Point(2,2)))
+    assert(!p1.adjoin(Point(3,4)))
+  }
 
+  test("isLNeighbor") {
+    val p1 = Point(5,5)
+    assert(p1.isLNeighbor(Point(7,4)))
+    assert(p1.isLNeighbor(Point(7,6)))
+    assert(p1.isLNeighbor(Point(3,4)))
+    assert(p1.isLNeighbor(Point(6,7)))
+    assert(p1.isLNeighbor(Point(4,3)))
+    assert(!p1.isLNeighbor(Point(2,2)))
+  }
 }

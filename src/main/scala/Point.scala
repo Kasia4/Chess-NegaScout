@@ -22,6 +22,9 @@ case class Point(x: Int, y: Int) {
 
   def onSameLine(other: Point): Boolean = this.x == other.x || this.y == other.y
   def onSameDiagonal(other: Point): Boolean = this.y - this.x == other.y - other.x ||  this.y + this.x == other.y + other.x
-
+  def adjoin(other: Point): Boolean = this.distX(other) <= 1 && this.distY(other) <= 1
+  def isLNeighbor(other: Point): Boolean =
+    (this.distX(other) == 1 && this.distY(other) == 2) ||
+    (this.distX(other) == 2 && this.distY(other) == 1)
 }
 
