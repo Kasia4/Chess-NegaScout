@@ -55,4 +55,12 @@ case class Piece(ptype: PieceType, color: Color, moved: Boolean = true) {
     case Queen => pos.onSameDiagonal(to) || pos.onSameLine(to)
     case King => pos.adjoin(to)
   }
+
+  def canAttack(pos: Point, to: Point): Boolean = ptype match {
+    case Pawn => {
+      if (color == White) pos.below(to) && pos.distX(to) == 1 && pos.distY(to) == 1
+      else pos.above(to) && pos.distX(to) == 1 && pos.distY(to) == 1
+    }
+    case _ => canMove(pos, to)
+  }
 }

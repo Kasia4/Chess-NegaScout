@@ -64,4 +64,24 @@ class PieceTest extends org.scalatest.FunSuite {
     assert(king.canMove(Point(3,3), Point(4,4)))
     assert(!king.canMove(Point(3,3), Point(3,5)))
   }
+
+  test("test white pawn attack") {
+    val pawn = Piece(Pawn, White)
+    assert(pawn.canAttack(Point(1,1), Point(2,2)))
+    assert(pawn.canAttack(Point(1,1), Point(0,2)))
+    assert(!pawn.canAttack(Point(1,1), Point(2,0)))
+  }
+
+  test("test black pawn attack") {
+    val pawn = Piece(Pawn, Black)
+    assert(pawn.canAttack(Point(7,7), Point(6,6)))
+    assert(pawn.canAttack(Point(7,7), Point(8,6)))
+    assert(!pawn.canAttack(Point(7,7), Point(8,8)))
+  }
+
+  test("test other pieces attack") {
+    val piece = Piece(Knight, Black)
+    assert(piece.canAttack(Point(5,5), Point(6,7)))
+    assert(!piece.canAttack(Point(5,5), Point(7,5)))
+  }
 }
