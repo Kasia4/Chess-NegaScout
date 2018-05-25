@@ -45,9 +45,14 @@ case object King extends PieceType {
 case class Piece(ptype: PieceType, color: Color, moved: Boolean = true) {
   def canMove(pos: Point, to: Point): Boolean = ptype match {
     case Pawn => {
-      val maxdist: Int = if (moved) 1 else 2
-      if (color == White) pos.below(to) && pos.distX(to) == 0 && pos.distY(to) <= maxdist
-      else pos.above(to) && pos.distX(to) == 0 && pos.distY(to) <= maxdist
+      val maxDist: Int = if (moved) 1 else 2
+      if (color == White) pos.below(to) && pos.distX(to) == 0 && pos.distY(to) <= maxDist
+      else pos.above(to) && pos.distX(to) == 0 && pos.distY(to) <= maxDist
     }
+    case Knight => pos.isLNeighbor(to)
+    case Bishop => pos.onSameDiagonal(to)
+    case Rook => pos.onSameLine(to)
+    case Queen => pos.onSameDiagonal(to) || pos.onSameLine(to)
+    case King => pos.adjoin(to)
   }
 }
