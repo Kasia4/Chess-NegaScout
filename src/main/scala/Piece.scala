@@ -42,3 +42,12 @@ case object King extends PieceType {
   val promotable = false
 }
 
+case class Piece(ptype: PieceType, color: Color, moved: Boolean = true) {
+  def canMove(pos: Point, to: Point): Boolean = ptype match {
+    case Pawn => {
+      val maxdist: Int = if (moved) 1 else 2
+      if (color == White) pos.below(to) && pos.distX(to) == 0 && pos.distY(to) <= maxdist
+      else pos.above(to) && pos.distX(to) == 0 && pos.distY(to) <= maxdist
+    }
+  }
+}
