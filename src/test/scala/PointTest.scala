@@ -90,4 +90,24 @@ class PointTest extends org.scalatest.FunSuite {
     assert(p1.isLNeighbor(Point(4,3)))
     assert(!p1.isLNeighbor(Point(2,2)))
   }
+
+  test("atLeft returns true only when x coordinate of p1 is lesser then p2") {
+    assert(Point(0,0) atLeft Point(1,0))
+    assert(!(Point(0,0) atLeft Point(-1,0)))
+  }
+
+  test("atRight returns true only when x coordinate of p1 is greater then p2") {
+    assert(Point(0, 0) atRight Point(-1, 0))
+    assert(!(Point(4, 0) atRight Point(5, 3)))
+  }
+
+  test("above returns true only when y coordinate of p1 is greater then p2") {
+    assert(Point(3,4) above Point(9,2))
+    assert(!(Point(3,4) above Point(1,7)))
+  }
+
+  test("below returns true only when y coordinate of p1 is lesser then p2") {
+    assert(Point(3,4) below Point(1,7))
+    assert(!(Point(3,4) below Point(9,2)))
+  }
 }
