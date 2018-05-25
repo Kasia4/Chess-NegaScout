@@ -11,6 +11,11 @@ case class Point(x: Int, y: Int) {
   val downRight = Point(1,-1)
   val downLeft  = Point(-1,-1)
 
+  lazy val horizontalDir   = List(right, left)
+  lazy val verticalDir     = List(up, down)
+  lazy val lineDir         = List(horizontalDir ::: verticalDir)
+  lazy val diagonalDir     = List(upRight, upLeft, downRight, downLeft)
+
   def +(other: Point): Point = {
     Point(this.x + other.x, this.y + other.y)
   }
