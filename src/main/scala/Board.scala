@@ -27,6 +27,7 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
           val dir = if (piece.color == White) Up.vec else Down.vec
           pos.path(dir, dist).toList.span(isEmptyAt)._1
         }
+        case Knight => pos.lNeighbors()
       }
     }.filter(canMove)
   }

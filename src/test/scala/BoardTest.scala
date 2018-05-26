@@ -127,4 +127,13 @@ class BoardTest extends org.scalatest.FunSuite{
 
     assert(moves.toSet == Set.empty[Point])
   }
+
+  test("knight can move according to L-shape pattern on unoccupied fields on board") {
+    val board = Board()
+      .add(Point(1,0), Piece(Knight, White)).get
+      .add(Point(2,2), Piece(Queen, White)).get
+
+    val moves = board.possibleMoves(Point(1,0))
+    assert(moves.toSet == Set(Point(0,2), Point(3,1)))
+  }
 }
