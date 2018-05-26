@@ -22,18 +22,21 @@ case object Bishop extends PieceType {
   val name = "Bishop"
   val symbol = 'B'
   val promotable = true
+  val dirs: List[Direction] = Direction.diagonalDir
 }
 
 case object Rook extends PieceType {
   val name = "Rook"
   val symbol = 'R'
   val promotable = true
+  val dirs: List[Direction] = Direction.lineDir
 }
 
 case object Queen extends PieceType {
   val name = "Queen"
   val symbol = 'Q'
   val promotable = true
+  val dirs: List[Direction] = Direction.allDir
 }
 
 case object King extends PieceType {
