@@ -14,4 +14,9 @@ case class Rectangle(size: Point) {
       case DownRight => Math.min(distToBorder(point, Down), distToBorder(point, Right))
       case DownLeft => Math.min(distToBorder(point, Down), distToBorder(point, Left))
     }
+
+  def pathToBorder(start: Point, dir: Direction): IndexedSeq[Point] = {
+    start.path(dir.vec, distToBorder(start, dir))
+  }
+
 }
