@@ -16,7 +16,7 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
 
   def findOccupiedFieldInDirection(from: Point, dir: Direction): Option[Point] = {
     if (rect contains from) {
-      if (isEmptyAt(from)) findOccupiedFieldInDirection(from + dir.apply(), dir)
+      if (isEmptyAt(from)) findOccupiedFieldInDirection(from + dir.vec, dir)
       else Some(from)
     }
     else None

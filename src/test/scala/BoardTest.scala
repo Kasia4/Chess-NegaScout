@@ -53,9 +53,9 @@ class BoardTest extends org.scalatest.FunSuite{
   }
 
   test("test findOccupiedFieldInDirection") {
-    val board = Board().add(Point(1,5), Piece(Pawn, White)).get
-    assert(board.findOccupiedFieldInDirection(Point(1, 0), Point(0,1)).get == Point(1,5))
-    assert(board.findOccupiedFieldInDirection(Point(1, 0), Point(1,0)).isEmpty )
+    val board = Board().add(Point(5,0), Piece(Pawn, White)).get
+    assert(board.findOccupiedFieldInDirection(Point(1, 0), Right).get == Point(5,0))
+    assert(board.findOccupiedFieldInDirection(Point(1, 0), Left).isEmpty )
   }
 
 }
