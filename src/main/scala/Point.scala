@@ -32,6 +32,13 @@ case class Point(x: Int, y: Int) {
   def below(other: Point): Boolean = this.y < other.y
   def atLeft(other: Point): Boolean = this.x < other.x
   def atRight(other: Point): Boolean = this.x > other.x
+
+  def onBothCoord(other: Point, cond :(Int, Int) => Boolean): Boolean = cond(this.x, other.x) && cond(this.y, other.y)
+
+  def >(other: Point): Boolean = onBothCoord(other, _ > _)
+  def >=(other: Point): Boolean = onBothCoord(other, _ >= _)
+  def <(other: Point): Boolean = onBothCoord(other, _ < _)
+  def <=(other: Point): Boolean = onBothCoord(other, _ <= _)
 }
 
 object Point {

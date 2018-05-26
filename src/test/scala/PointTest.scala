@@ -110,4 +110,15 @@ class PointTest extends org.scalatest.FunSuite {
     assert(Point(3,4) below Point(1,7))
     assert(!(Point(3,4) below Point(9,2)))
   }
+
+  test("test point relational operators") {
+    assert(Point(3,4) > Point(1,2))
+    assert(!(Point(3,4) > Point(3,2)))
+    assert(Point(3,4) >= Point(3,4))
+    assert(!(Point(3,4) >= Point(4,4)))
+    assert(Point(3,4) < Point(4,5))
+    assert(!(Point(3,3) < Point(3,4)))
+    assert(Point(3,4) <= Point(3,4))
+    assert(!(Point(3,4) <= Point(2,4)))
+  }
 }
