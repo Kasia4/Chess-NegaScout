@@ -14,9 +14,9 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
   def ofColor(color: Color): Map[Point, Piece] = pieces.filter(p => p._2.color == color)
   def ofType(pieceType: PieceType): Map[Point, Piece] = pieces.filter(p => p._2.ptype == pieceType)
 
-  def findOccupiedFieldInDirection(from: Point, dir: Point): Option[Point] = {
+  def findOccupiedFieldInDirection(from: Point, dir: Direction): Option[Point] = {
     if (rect contains from) {
-      if (isEmptyAt(from)) findOccupiedFieldInDirection(from + dir, dir)
+      if (isEmptyAt(from)) findOccupiedFieldInDirection(from + dir.apply(), dir)
       else Some(from)
     }
     else None
