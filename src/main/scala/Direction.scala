@@ -5,13 +5,15 @@ sealed trait Direction {
   def apply(): Point = dir
 }
 
-object Up extends Direction         { val dir = Point(0, 1) }
+sealed trait LineDirection extends Direction
 
-object Down extends Direction       { val dir = Point(0, -1) }
+object Up extends LineDirection         { val dir = Point(0, 1) }
 
-object Right extends Direction      { val dir = Point(1, 0) }
+object Down extends LineDirection       { val dir = Point(0, -1) }
 
-object Left extends Direction       { val dir = Point(-1, 0) }
+object Right extends LineDirection      { val dir = Point(1, 0) }
+
+object Left extends LineDirection       { val dir = Point(-1, 0) }
 
 object UpRight extends Direction    { val dir = Point(1, 1) }
 
