@@ -136,4 +136,53 @@ class BoardTest extends org.scalatest.FunSuite{
     val moves = board.possibleMoves(Point(1,0))
     assert(moves.toSet == Set(Point(0,2), Point(3,1)))
   }
+
+  test("bishop can move only on diagonals") {
+    val board = Board()
+      .add(Point(1,1), Piece(Bishop, White)).get
+      .add(Point(3,3), Piece(Pawn, Black)).get
+
+    val moves = board.possibleMoves(Point(1,1))
+    assert(moves.contains(Point(0,2)))
+    assert(moves.contains(Point(2,2)))
+    assert(!moves.contains(Point(3,3)))
+    assert(!moves.contains(Point(3,1)))
+  }
+
+  test("rook can move only on lines") {
+    val board = Board()
+      .add(Point(1,1), Piece(Rook, White)).get
+      .add(Point(3,1), Piece(Pawn, Black)).get
+
+    val moves = board.possibleMoves(Point(1,1))
+    assert(moves.contains(Point(0,1)))
+    assert(moves.contains(Point(1,7)))
+    assert(!moves.contains(Point(7,1)))
+    assert(!moves.contains(Point(0,0)))
+  }
+
+  test("queen can move only on lines and diagonals") {
+    val board = Board()
+      .add(Point(1,1), Piece(Queen, White)).get
+      .add(Point(3,1), Piece(Pawn, Black)).get
+
+    val moves = board.possibleMoves(Point(1,1))
+    assert(moves.contains(Point(3,3)))
+    assert(moves.contains(Point(1,7)))
+    assert(!moves.contains(Point(7,1)))
+    assert(!moves.contains(Point(3,4)))
+  }
+
+  test("king can move only on adjoin fields") {
+    val board = Board()
+      .add(Point(1,1), Piece(King, White)).get
+      .add(Point(2,1), Piece(Pawn, Black)).get
+
+    val moves = board.possibleMoves(Point(1,1))
+
+    assert(moves.contains(Point(0,1)))
+    assert(moves.contains(Point(1,2)))
+    assert(!moves.contains(Point(2,1)))
+    assert(!moves.contains(Point(1,3)))
+  }
 }

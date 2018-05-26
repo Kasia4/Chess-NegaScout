@@ -6,6 +6,10 @@ sealed trait PieceType {
   val promotable: Boolean
 }
 
+sealed trait DirectionalType extends PieceType{
+  val dirs: List[Direction]
+}
+
 case object Pawn extends PieceType {
   val name = "Pawn"
   val symbol = 'p'
@@ -18,21 +22,21 @@ case object Knight extends PieceType {
   val promotable = true
 }
 
-case object Bishop extends PieceType {
+case object Bishop extends DirectionalType {
   val name = "Bishop"
   val symbol = 'B'
   val promotable = true
   val dirs: List[Direction] = Direction.diagonalDir
 }
 
-case object Rook extends PieceType {
+case object Rook extends DirectionalType {
   val name = "Rook"
   val symbol = 'R'
   val promotable = true
   val dirs: List[Direction] = Direction.lineDir
 }
 
-case object Queen extends PieceType {
+case object Queen extends DirectionalType {
   val name = "Queen"
   val symbol = 'Q'
   val promotable = true

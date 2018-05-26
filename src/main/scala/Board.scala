@@ -28,8 +28,11 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
           pos.path(dir, dist).toList.span(isEmptyAt)._1
         }
         case Knight => pos.lNeighbors()
+        case King => pos.neighbors()
+        case dir_piece: DirectionalType => scanDirs(dir_piece.dirs, pos)
       }
     }.filter(canMove)
+
   }
 
   def findOccupiedFieldInDirection(from: Point, dir: Direction): Option[Point] = {
