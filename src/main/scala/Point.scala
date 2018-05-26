@@ -1,4 +1,5 @@
 package chess.board
+import scala.collection.immutable
 
 case class Point(x: Int, y: Int) {
 
@@ -8,6 +9,10 @@ case class Point(x: Int, y: Int) {
 
   def -(other: Point): Point = {
     Point(this.x - other.x, this.y - other.y)
+  }
+
+  def *(s: Int): Point = {
+    Point(this.x * s, this.y * s)
   }
 
   def flipX(): Point = {
@@ -39,4 +44,6 @@ case class Point(x: Int, y: Int) {
   def >=(other: Point): Boolean = onBothCoord(other, _ >= _)
   def <(other: Point): Boolean = onBothCoord(other, _ < _)
   def <=(other: Point): Boolean = onBothCoord(other, _ <= _)
+
+  def path(start: Point, shift: Point, length: Int): IndexedSeq[Point] = for(i <- 1 to length) yield start + shift * i
 }
