@@ -1,7 +1,13 @@
 package chess.board
 
-case class Board (pieces: Map[Point, Piece] = Map()) {
-  def add(pos: Point, piece: Piece) = Board(pieces + (pos -> piece))
+case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle(Point(8,8))) {
+
+  def add(pos: Point, piece: Piece):Option[Board] = {
+    if (rect.contains(pos) && isEmptyAt(pos))
+      Some(Board(pieces + (pos -> piece)))
+    else None
+  }
+
   def remove(pos: Point) = Board(pieces - pos)
   def isEmptyAt(pos: Point): Boolean = pieces.get(pos).isEmpty
   def getAt(pos: Point):Option[Piece] = pieces.get(pos)
