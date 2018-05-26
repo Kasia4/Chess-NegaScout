@@ -132,7 +132,7 @@ class PointTest extends org.scalatest.FunSuite {
 
   test("neighbors returns 8 adjoining fields") {
     val neighs = Point(4,4).neighbors()
-    assert(neighs == Set(
+    assert(neighs.toSet == Set(
       Point(3,5),Point(4,5),Point(5,5),
       Point(3,4),           Point(5,4),
       Point(3,3),Point(4,3),Point(5,3)))
@@ -140,7 +140,7 @@ class PointTest extends org.scalatest.FunSuite {
 
   test("lNeighbors returns 8 fields according to knight moves") {
     val neighs = Point(4,4).lNeighbors()
-    assert(neighs == Set(
+    assert(neighs.toSet == Set(
       Point(3,6), Point(5,6), Point(2,5), Point(6,5),
       Point(2,3), Point(6,3), Point(3,2), Point(5,2)))
   }
