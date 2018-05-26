@@ -25,8 +25,8 @@ object DownLeft extends DiagDirection   { val vec = Point(-1, -1) }
 
 object Direction {
   lazy val horizontalDir    = List(Right, Left)
-  lazy val vertivalDir      = List(Up, Down)
-  lazy val lineDir          = List(horizontalDir :: vertivalDir)
+  lazy val verticalDir      = List(Up, Down)
+  lazy val lineDir          = List(horizontalDir :: verticalDir)
   lazy val diagonalDir      = List(UpRight, UpLeft, DownRight, DownLeft)
   lazy val allDir           = List(diagonalDir :: lineDir)
 }

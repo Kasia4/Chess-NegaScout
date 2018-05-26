@@ -46,4 +46,14 @@ case class Point(x: Int, y: Int) {
   def <=(other: Point): Boolean = onBothCoord(other, _ <= _)
 
   def path(shift: Point, length: Int): IndexedSeq[Point] = for(i <- 1 to length) yield this + shift * i
+
+  def lNeighbors(): Set[Point] =
+    for(x <- Set(-2,-1,1,2);
+        y <- Set(-2,-1,1,2) if Math.abs(x) + Math.abs(y) == 3)
+      yield this + Point(x, y)
+
+  def neighbors(): Set[Point] =
+    for(x <- Set(-1,0,1);
+        y <- Set(-1,0,1) if x != 0 || y != 0)
+      yield this + Point(x, y)
 }

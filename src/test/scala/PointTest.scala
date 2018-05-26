@@ -128,7 +128,20 @@ class PointTest extends org.scalatest.FunSuite {
     assert(seq(0) == Point(0,1))
     assert(seq(1) == Point(0,2))
     assert(seq(2) == Point(0,3))
+  }
 
+  test("neighbors returns 8 adjoining fields") {
+    val neighs = Point(4,4).neighbors()
+    assert(neighs == Set(
+      Point(3,5),Point(4,5),Point(5,5),
+      Point(3,4),           Point(5,4),
+      Point(3,3),Point(4,3),Point(5,3)))
+  }
 
+  test("lNeighbors returns 8 fields according to knight moves") {
+    val neighs = Point(4,4).lNeighbors()
+    assert(neighs == Set(
+      Point(3,6), Point(5,6), Point(2,5), Point(6,5),
+      Point(2,3), Point(6,3), Point(3,2), Point(5,2)))
   }
 }
