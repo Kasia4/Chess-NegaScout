@@ -21,5 +21,12 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
     }
     else None
   }
+
+  def scanDirs(dirs: List[Direction], start: Point): List[Point] = {
+    (for (dir <- dirs) yield
+      rect.pathToBorder(start, dir).span(isEmptyAt)._1).flatten
+  }
+
+  def canMove(pos: Point): Boolean = isEmptyAt(pos) && rect.contains(pos)
 }
 

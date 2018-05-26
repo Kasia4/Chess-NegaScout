@@ -58,4 +58,18 @@ class BoardTest extends org.scalatest.FunSuite{
     assert(board.findOccupiedFieldInDirection(Point(1, 0), Left).isEmpty )
   }
 
+  test("test canMove") {
+    val board = Board().add(Point(5,2), Piece(Bishop, White)).get
+    assert(board.canMove(Point(5,3)))
+    assert(!board.canMove(Point(9,10)))
+    assert(!board.canMove(Point(5,2)))
+  }
+
+  test("test scanDirs") {
+    val board = Board()
+      .add(Point(3,3), Piece(Queen, Black)).get
+    val dirs = List(UpRight, Down)
+    assert(board.scanDirs(dirs, Point(1,1)).toSet == Set(Point(1,0), Point(2,2)))
+  }
+
 }
