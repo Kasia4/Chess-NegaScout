@@ -72,4 +72,59 @@ class BoardTest extends org.scalatest.FunSuite{
     assert(board.scanDirs(dirs, Point(1,1)).toSet == Set(Point(1,0), Point(2,2)))
   }
 
+  test("unmoved white pawn movement on empty board can move two fields up") {
+    val board = Board()
+      .add(Point(4,1), Piece(Pawn, White, moved = false)).get
+
+    val unmoved_moves = board.possibleMoves(Point(4,1))
+
+    assert(unmoved_moves.toSet == Set(Point(4,2), Point(4,3)))
+  }
+
+  test("moved white pawn movement on empty board one field up") {
+    val board = Board()
+      .add(Point(7,1), Piece(Pawn, White)).get
+
+    val moved_moves = board.possibleMoves(Point(7,1))
+
+    assert(moved_moves.toSet == Set(Point(7,2)))
+  }
+
+  test("unmoved black pawn movement on empty board can move two fields down") {
+    val board = Board()
+      .add(Point(4,7), Piece(Pawn, Black, moved = false)).get
+
+    val unmoved_moves = board.possibleMoves(Point(4,7))
+
+    assert(unmoved_moves.toSet == Set(Point(4,6), Point(4,5)))
+  }
+
+  test("moved black pawn movement on empty board can move one field down") {
+    val board = Board()
+      .add(Point(4,7), Piece(Pawn, Black)).get
+
+    val moves = board.possibleMoves(Point(4,7))
+
+    assert(moves.toSet == Set(Point(4,6)))
+  }
+
+  test("unmoved pawn can move only one field when it's blocked") {
+    val board = Board()
+      .add(Point(1,1), Piece(Pawn, White, moved = false)).get
+      .add(Point(1,3), Piece(Rook, Black)).get
+
+    val moves = board.possibleMoves(Point(1,1))
+
+    assert(moves.toSet == Set(Point(1,2)))
+  }
+
+  test("pawn can't move when it's blocked directly") {
+    val board = Board()
+      .add(Point(1,1), Piece(Pawn, White, moved = false)).get
+      .add(Point(1,2), Piece(Rook, Black)).get
+
+    val moves = board.possibleMoves(Point(1,1))
+
+    assert(moves.toSet == Set.empty[Point])
+  }
 }
