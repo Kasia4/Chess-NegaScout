@@ -1,4 +1,4 @@
-import chess.board.Point
+import chess.board.{Point, Up}
 
 class PointTest extends org.scalatest.FunSuite {
   test("when points are added, result is sum of them") {
@@ -120,5 +120,15 @@ class PointTest extends org.scalatest.FunSuite {
     assert(!(Point(3,3) < Point(3,4)))
     assert(Point(3,4) <= Point(3,4))
     assert(!(Point(3,4) <= Point(2,4)))
+  }
+
+  test("path generates sequence of consecutive points") {
+    val seq = Point(0,0).path(Up.vec, length = 3)
+    assert(seq.length == 3)
+    assert(seq(0) == Point(0,1))
+    assert(seq(1) == Point(0,2))
+    assert(seq(2) == Point(0,3))
+
+
   }
 }

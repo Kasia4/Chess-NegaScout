@@ -45,5 +45,5 @@ case class Point(x: Int, y: Int) {
   def <(other: Point): Boolean = onBothCoord(other, _ < _)
   def <=(other: Point): Boolean = onBothCoord(other, _ <= _)
 
-  def path(start: Point, shift: Point, length: Int): IndexedSeq[Point] = for(i <- 1 to length) yield start + shift * i
+  def path(shift: Point, length: Int): IndexedSeq[Point] = for(i <- 1 to length) yield this + shift * i
 }
