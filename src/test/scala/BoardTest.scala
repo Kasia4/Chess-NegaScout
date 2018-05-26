@@ -46,4 +46,10 @@ class BoardTest extends org.scalatest.FunSuite{
     assert(filtered.contains(Point(0,1)))
     assert(filtered.contains(Point(2,7)))
   }
+
+  test("isEmptyAt checks if given field is empty") {
+    assert(Board().isEmptyAt(Point(1,5)))
+    assert(!Board().add(Point(1,5), Piece(Pawn, White)).isEmptyAt(Point(1,5)))
+  }
+
 }
