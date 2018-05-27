@@ -1,7 +1,7 @@
 import chess.board._
 
 class BoardTest extends org.scalatest.FunSuite{
-  test("When piece is added to board, pieces map cotains it") {
+  test("When piece is added to board, pieces map contains it") {
     val board = Board()
     val board2 = board.add(Point(5,5), Piece(Pawn, White)).get
     assert(board2.pieces(Point(5,5)) == Piece(Pawn, White))
@@ -351,6 +351,19 @@ class BoardTest extends org.scalatest.FunSuite{
         .add(from, piece).get
         .add(to, piece2).get
         .applyCapture(Move(from, to)).isEmpty
+    )
+  }
+
+  test("Board contains all pieces added from another map") {
+    val pawn = Piece(Pawn, White)
+    val pieces: Map[Point, Piece] = List(Point(0,1) -> pawn, Point(1,1) -> pawn).toMap
+    val board = Board()
+        .add(Point(2,1), pawn).get
+        .add(pieces).get
+    assert(
+      board.getAt(Point(0,1)).get == pawn &&
+      board.getAt(Point(1,1)).get == pawn &&
+      board.getAt(Point(2,1)).get == pawn
     )
   }
 

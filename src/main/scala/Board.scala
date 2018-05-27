@@ -8,6 +8,11 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
     else None
   }
 
+  def add(new_pieces: Map[Point, Piece]): Option[Board] = {
+    if (!new_pieces.keys.forall(isEmptyAt)) None
+    else Some(Board(new_pieces ++ pieces))
+  }
+
   def replace(pos: Point, piece: Piece):Option[Board] = {
     if (rect.contains(pos))
       Some(Board(pieces + (pos -> piece)))
@@ -92,4 +97,5 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
 
   def isOpponent(pos: Point, color: Color): Boolean = isOccupiedAt(pos) && getAt(pos).get.color == color.opponent
 }
+
 
