@@ -7,7 +7,6 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
       Some(Board(pieces + (pos -> piece)))
     else None
   }
-
   def remove(pos: Point) = Board(pieces - pos)
   def isEmptyAt(pos: Point): Boolean = pieces.get(pos).isEmpty && rect.contains(pos)
   def isOccupiedAt(pos: Point): Boolean = pieces.get(pos).isDefined
@@ -46,6 +45,7 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
         }.filter(isOpponent(_,piece.color))
         case Knight => pos.lNeighbors().filter(isOpponent(_, piece.color))
         case King => pos.neighbors().filter(isOpponent(_, piece.color))
+        case dir_piece: DirectionalType => scanOpponent(dir_piece.dirs, pos, piece.color)
       }
     }
   }

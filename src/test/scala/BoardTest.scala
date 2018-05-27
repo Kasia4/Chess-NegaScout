@@ -235,4 +235,30 @@ class BoardTest extends org.scalatest.FunSuite{
       .add(Point(6,4), Piece(Rook, White)).get
     assert(board.possibleCaptures(Point(4,4)).toSet == Set(Point(3,4)))
   }
+
+  test("Bishop can capture opponent's pieces only on diagonals") {
+    val board = Board()
+      .add(Point(4,4), Piece(Bishop, Black)).get
+      .add(Point(7,7), Piece(Rook, White)).get
+      .add(Point(4,6), Piece(Rook, White)).get
+    assert(board.possibleCaptures(Point(4,4)).toSet == Set(Point(7,7)))
+  }
+
+  test("Rook can capture opponent's pieces only on lines") {
+    val board = Board()
+      .add(Point(4,4), Piece(Rook, Black)).get
+      .add(Point(7,7), Piece(Bishop, White)).get
+      .add(Point(4,6), Piece(Rook, White)).get
+    assert(board.possibleCaptures(Point(4,4)).toSet == Set(Point(4,6)))
+  }
+
+  test("Queen can capture opponent's pieces only on diagonals and lines") {
+    val board = Board()
+      .add(Point(4,4), Piece(Queen, Black)).get
+      .add(Point(7,7), Piece(Rook, White)).get
+      .add(Point(4,6), Piece(Rook, White)).get
+      .add(Point(3,6), Piece(Knight, White)).get
+
+    assert(board.possibleCaptures(Point(4,4)).toSet == Set(Point(7,7), Point(4,6)))
+  }
 }
