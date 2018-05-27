@@ -202,11 +202,37 @@ class BoardTest extends org.scalatest.FunSuite{
     assert(board.scanOpponent(List(Right), Point(0,1), Black).isEmpty)
   }
 
-  test("White pawn can capture opponent's pieces on fields on corners in front of it") {
+  test("White pawn can capture opponent's pieces on fields on corners above it") {
     val board = Board()
       .add(Point(1,1), Piece(Pawn, White)).get
       .add(Point(0,2), Piece(Bishop, Black)).get
       .add(Point(2,2), Piece(Knight, White)).get
+      .add(Point(0,0), Piece(Rook, Black)).get
     assert(board.possibleCaptures(Point(1,1)).toSet == Set(Point(0,2)))
+  }
+
+  test("Black pawn can capture opponent's pieces on fields on corners below it") {
+    val board = Board()
+      .add(Point(1,7), Piece(Pawn, Black)).get
+      .add(Point(0,6), Piece(Bishop, White)).get
+      .add(Point(2,6), Piece(Knight, Black)).get
+      .add(Point(0,7), Piece(Rook, White)).get
+    assert(board.possibleCaptures(Point(1,7)).toSet == Set(Point(0,6)))
+  }
+
+  test("Knight can capture opponent's pieces only on L-shape pattern") {
+    val board = Board()
+      .add(Point(4,4), Piece(Knight, Black)).get
+      .add(Point(2,5), Piece(Knight, White)).get
+      .add(Point(4,5), Piece(Rook, Black)).get
+    assert(board.possibleCaptures(Point(4,4)).toSet == Set(Point(2,5)))
+  }
+
+  test("King can capture opponent's pieces only on adjoin fileds") {
+    val board = Board()
+      .add(Point(4,4), Piece(King, Black)).get
+      .add(Point(3,4), Piece(Knight, White)).get
+      .add(Point(6,4), Piece(Rook, White)).get
+    assert(board.possibleCaptures(Point(4,4)).toSet == Set(Point(3,4)))
   }
 }

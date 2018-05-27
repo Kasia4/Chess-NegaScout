@@ -44,6 +44,8 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
           val dir = piece.color.direction
           List(Right.vec + dir + pos, Left.vec + dir + pos)
         }.filter(isOpponent(_,piece.color))
+        case Knight => pos.lNeighbors().filter(isOpponent(_, piece.color))
+        case King => pos.neighbors().filter(isOpponent(_, piece.color))
       }
     }
   }
