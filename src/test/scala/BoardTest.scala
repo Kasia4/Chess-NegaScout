@@ -202,5 +202,11 @@ class BoardTest extends org.scalatest.FunSuite{
     assert(board.scanOpponent(List(Right), Point(0,1), Black).isEmpty)
   }
 
-
+  test("White pawn can capture opponent's pieces on fields on corners in front of it") {
+    val board = Board()
+      .add(Point(1,1), Piece(Pawn, White)).get
+      .add(Point(0,2), Piece(Bishop, Black)).get
+      .add(Point(2,2), Piece(Knight, White)).get
+    assert(board.possibleCaptures(Point(1,1)).toSet == Set(Point(0,2)))
+  }
 }

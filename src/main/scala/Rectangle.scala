@@ -20,6 +20,6 @@ case class Rectangle(size: Point) {
   }
 
   def findInDirection(start: Point, dir: Direction, cond: Point => Boolean): Option[Point] = {
-    start.path(dir.vec, distToBorder(start, dir)).find(cond)
+    pathToBorder(start, dir).find(cond)
   }
 }

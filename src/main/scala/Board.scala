@@ -35,6 +35,19 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
     }.filter(isEmptyAt)
   }
 
+  def possibleCaptures(pos: Point): List[Point] = {
+    if (isEmptyAt(pos)) List.empty[Point]
+    else {
+      val piece = getAt(pos).get
+      piece.ptype match {
+        case Pawn => {
+          val dir = piece.color.direction
+          List(Right.vec + dir + pos, Left.vec + dir + pos)
+        }.filter(isOpponent(_,piece.color))
+      }
+    }
+  }
+
   def scanDirs(dirs: List[Direction], start: Point): List[Point] = {
     (for (dir <- dirs) yield
       rect.pathToBorder(start, dir).span(isEmptyAt)._1).flatten
