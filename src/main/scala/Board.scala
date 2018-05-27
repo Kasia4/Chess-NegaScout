@@ -97,14 +97,13 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
 
   def isOpponent(pos: Point, color: Color): Boolean = isOccupiedAt(pos) && getAt(pos).get.color == color.opponent
 
-  def toString() = {
-    var str: String
-    for( x <- 0 to 7;
-         y <- 0 to 7) {
+  override def toString(): String = {
+    (for( y <- 0 to 7) yield
+      (for( x <- 0 to 7) yield {
       val opt = getAt(Point(x, y))
-      if (opt.isEmpty) str += " "
-      else str += opt.get.ptype.symbol
-    }
+      if (opt.isEmpty) ' '
+      else opt.get.ptype.symbol
+    }).mkString + '\n').mkString
   }
 }
 
@@ -120,7 +119,7 @@ object Board {
         row(i) + Point(0, 1) -> w_pawn,
         row(i) + Point(0, 6) -> b_pawn,
         row(i) + Point(0, 7) -> Piece(types(i), Black)
-      ).flatten).flatten.toMap[Point, Piece]
+      )).flatten.toMap[Point, Piece]
     Board(pieces)
   }
 }

@@ -1,5 +1,4 @@
 package chess.board
-import scala.collection.immutable
 
 case class Point(x: Int, y: Int) {
 
