@@ -66,6 +66,120 @@ class BoardTest extends org.scalatest.FunSuite{
     assert(board.scanDirs(dirs, Point(1,1)).toSet == Set(Point(1,0), Point(2,2)))
   }
 
+  test("unmoved white pawn movement on empty board can move two fields up") {
+    val board = Board()
+      .add(Point(4,1), Piece(Pawn, White, moved = false)).get
+
+    val unmoved_moves = board.possibleMoves(Point(4,1))
+
+    assert(unmoved_moves.toSet == Set(Point(4,2), Point(4,3)))
+  }
+
+  test("moved white pawn movement on empty board one field up") {
+    val board = Board()
+      .add(Point(7,1), Piece(Pawn, White)).get
+
+    val moved_moves = board.possibleMoves(Point(7,1))
+
+    assert(moved_moves.toSet == Set(Point(7,2)))
+  }
+
+  test("unmoved black pawn movement on empty board can move two fields down") {
+    val board = Board()
+      .add(Point(4,7), Piece(Pawn, Black, moved = false)).get
+
+    val unmoved_moves = board.possibleMoves(Point(4,7))
+
+    assert(unmoved_moves.toSet == Set(Point(4,6), Point(4,5)))
+  }
+
+  test("moved black pawn movement on empty board can move one field down") {
+    val board = Board()
+      .add(Point(4,7), Piece(Pawn, Black)).get
+
+    val moves = board.possibleMoves(Point(4,7))
+
+    assert(moves.toSet == Set(Point(4,6)))
+  }
+
+  test("unmoved pawn can move only one field when it's blocked") {
+    val board = Board()
+      .add(Point(1,1), Piece(Pawn, White, moved = false)).get
+      .add(Point(1,3), Piece(Rook, Black)).get
+
+    val moves = board.possibleMoves(Point(1,1))
+
+    assert(moves.toSet == Set(Point(1,2)))
+  }
+
+  test("pawn can't move when it's blocked directly") {
+    val board = Board()
+      .add(Point(1,1), Piece(Pawn, White, moved = false)).get
+      .add(Point(1,2), Piece(Rook, Black)).get
+
+    val moves = board.possibleMoves(Point(1,1))
+
+    assert(moves.toSet == Set.empty[Point])
+  }
+
+  test("knight can move according to L-shape pattern on unoccupied fields on board") {
+    val board = Board()
+      .add(Point(1,0), Piece(Knight, White)).get
+      .add(Point(2,2), Piece(Queen, White)).get
+
+    val moves = board.possibleMoves(Point(1,0))
+    assert(moves.toSet == Set(Point(0,2), Point(3,1)))
+  }
+
+  test("bishop can move only on diagonals") {
+    val board = Board()
+      .add(Point(1,1), Piece(Bishop, White)).get
+      .add(Point(3,3), Piece(Pawn, Black)).get
+
+    val moves = board.possibleMoves(Point(1,1))
+    assert(moves.contains(Point(0,2)))
+    assert(moves.contains(Point(2,2)))
+    assert(!moves.contains(Point(3,3)))
+    assert(!moves.contains(Point(3,1)))
+  }
+
+  test("rook can move only on lines") {
+    val board = Board()
+      .add(Point(1,1), Piece(Rook, White)).get
+      .add(Point(3,1), Piece(Pawn, Black)).get
+
+    val moves = board.possibleMoves(Point(1,1))
+    assert(moves.contains(Point(0,1)))
+    assert(moves.contains(Point(1,7)))
+    assert(!moves.contains(Point(7,1)))
+    assert(!moves.contains(Point(0,0)))
+  }
+
+  test("queen can move only on lines and diagonals") {
+    val board = Board()
+      .add(Point(1,1), Piece(Queen, White)).get
+      .add(Point(3,1), Piece(Pawn, Black)).get
+
+    val moves = board.possibleMoves(Point(1,1))
+    assert(moves.contains(Point(3,3)))
+    assert(moves.contains(Point(1,7)))
+    assert(!moves.contains(Point(7,1)))
+    assert(!moves.contains(Point(3,4)))
+  }
+
+  test("king can move only on adjoin fields") {
+    val board = Board()
+      .add(Point(1,1), Piece(King, White)).get
+      .add(Point(2,1), Piece(Pawn, Black)).get
+
+    val moves = board.possibleMoves(Point(1,1))
+
+    assert(moves.contains(Point(0,1)))
+    assert(moves.contains(Point(1,2)))
+    assert(!moves.contains(Point(2,1)))
+    assert(!moves.contains(Point(1,3)))
+  }
+
   test("scan opponent returns first opponent piece encountered in every given direction") {
     val board = Board()
       .add(Point(1,1), Piece(Queen, White)).get
@@ -259,6 +373,24 @@ class BoardTest extends org.scalatest.FunSuite{
       Board()
         .add(king_pos, Piece(King, White)).get
         .kingPosition(White) == king_pos
+    )
+  }
+
+  test("test possibleCapturesOf") {
+    assert(
+      Board().add(
+        List(
+          Point(1,1) -> Piece(Pawn, White),
+          Point(0,2) -> Piece(Rook, Black),
+          Point(2,2) -> Piece(Knight, Black),
+          Point(2,5) -> Piece(Rook, White)
+        ).toMap).get
+        .possibleCapturesOf(White).toSet ==
+        Set(
+          Move(Point(1,1), Point(0,2)),
+          Move(Point(1,1), Point(2,2)),
+          Move(Point(2,5), Point(2,2))
+        )
     )
   }
 

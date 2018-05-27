@@ -114,6 +114,11 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
 
   def kingPosition(color: Color) = king_position(color)
 
+  def possibleCapturesOf(color: Color): List[Move] = {
+    (for(piece <- ofColor(color)) yield {
+        possibleCaptures(piece._1).map(Move(piece._1, _))
+    }).flatten.toList
+  }
 
 }
 
