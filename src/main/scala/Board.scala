@@ -105,6 +105,16 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
       else opt.get.ptype.symbol
     }).mkString + '\n').mkString
   }
+
+  lazy val king_position: Map[Color, Point] = {
+    pieces.collect{
+      case(pos, Piece(King, color, _)) => color -> pos
+    }
+  }
+
+  def kingPosition(color: Color) = king_position(color)
+
+
 }
 
 object Board {
@@ -122,4 +132,6 @@ object Board {
       )).flatten.toMap[Point, Piece]
     Board(pieces)
   }
+
+
 }
