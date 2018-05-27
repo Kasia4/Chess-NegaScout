@@ -96,6 +96,16 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
   }
 
   def isOpponent(pos: Point, color: Color): Boolean = isOccupiedAt(pos) && getAt(pos).get.color == color.opponent
+
+  def toString() = {
+    var str: String
+    for( x <- 0 to 7;
+         y <- 0 to 7) {
+      val opt = getAt(Point(x, y))
+      if (opt.isEmpty) str += " "
+      else str += opt.get.ptype.symbol
+    }
+  }
 }
 
 object Board {
