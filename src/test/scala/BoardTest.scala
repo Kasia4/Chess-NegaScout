@@ -420,4 +420,45 @@ class BoardTest extends org.scalatest.FunSuite{
     assert(board.checkOf(White))
     assert(!board.checkOf(Black))
   }
+
+  test("If from field is empty, applyLegalMove returns None") {
+    assert(
+      Board().applyLegalMove(Move(Point(1,1), Point(3,1)), White).isEmpty
+    )
+  }
+
+  test("If move if legal, applyLegalMove returns new board state") {
+    assert(
+      Board()
+        .add(Point(1,1), Piece(King,White)).get
+        .applyLegalMove(Move(Point(1,1), Point(1,2)), White).isDefined
+    )
+  }
+
+  test("If capturing is legal, applyLegalMove returns new board state") {
+    assert(
+      Board()
+        .add(
+          List(
+            Point(1,1) -> Piece(King,White),
+            Point(1,2) -> Piece(Pawn,Black)
+          ).toMap
+        ).get
+        .applyLegalMove(Move(Point(1,1), Point(1,2)), White).isDefined
+    )
+  }
+
+  test("If move causes check, applyLegalMove returns None") {
+    assert(
+      Board()
+        .add(
+          List(
+            Point(1,1) -> Piece(King,White),
+            Point(1,2) -> Piece(Pawn,Black),
+            Point(7,2) -> Piece(Rook,Black)
+          ).toMap
+        ).get
+        .applyLegalMove(Move(Point(1,1), Point(1,2)), White).isEmpty
+    )
+  }
 }
