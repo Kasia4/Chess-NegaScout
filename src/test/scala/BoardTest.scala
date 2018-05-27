@@ -261,4 +261,39 @@ class BoardTest extends org.scalatest.FunSuite{
 
     assert(board.possibleCaptures(Point(4,4)).toSet == Set(Point(7,7), Point(4,6)))
   }
+
+  test("When piece is moved, it isn't on origin position") {
+    val piece = Piece(Queen, Black)
+    val from = Point(1,1)
+    val to = Point(1,7)
+    val board = Board()
+      .add(from, piece).get
+      .applyMove(Move(from, to)).get
+    assert(board.getAt(from).isEmpty)
+  }
+
+  test("When piece is moved, it is on new position") {
+    val piece = Piece(Queen, Black)
+    val from = Point(1,1)
+    val to = Point(1,7)
+    val board = Board()
+      .add(from, piece).get
+      .applyMove(Move(from, to)).get
+    assert(board.getAt(to).get == piece)
+  }
+
+  test("When origin field is empty, applyMove returns None") {
+    assert(Board().applyMove(Move(Point(1,1),Point(1,2))).isEmpty)
+  }
+
+  test("When target field is occupied, applyMove returns None") {
+    val from = Point(1,1)
+    val to = Point(1,7)
+    val piece = Piece(Queen, Black)
+    val piece2 = Piece(Knight, White)
+    assert(Board()
+      .add(from, piece).get
+      .add(to, piece2).get
+      .applyMove(Move(from, to)).isEmpty)
+  }
 }

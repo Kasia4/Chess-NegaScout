@@ -3,11 +3,19 @@ package chess.board
 case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle(Point(8,8))) {
 
   def add(pos: Point, piece: Piece):Option[Board] = {
-    if (rect.contains(pos) && isEmptyAt(pos))
+    if (isEmptyAt(pos))
       Some(Board(pieces + (pos -> piece)))
     else None
   }
+
+  def replace(pos: Point, piece: Piece):Option[Board] = {
+    if (rect.contains(pos))
+      Some(Board(pieces + (pos -> piece)))
+    else None
+  }
+
   def remove(pos: Point) = Board(pieces - pos)
+
   def isEmptyAt(pos: Point): Boolean = pieces.get(pos).isEmpty && rect.contains(pos)
   def isOccupiedAt(pos: Point): Boolean = pieces.get(pos).isDefined
   def getAt(pos: Point):Option[Piece] = pieces.get(pos)
@@ -16,6 +24,13 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
   def ofType(pieceType: PieceType): Map[Point, Piece] = pieces.filter(p => p._2.ptype == pieceType)
 
 
+  def applyMove(move: Move): Option[Board] = {
+    if (isOccupiedAt(move.from) && isEmptyAt(move.to)) {
+      val moved = getAt(move.from).get
+      this.remove(move.from).add(move.to, moved)
+    }
+    else None
+  }
 
   def possibleMoves(pos: Point): List[Point] = {
     if (isEmptyAt(pos)) List.empty[Point]
