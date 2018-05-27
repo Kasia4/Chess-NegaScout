@@ -32,6 +32,18 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
     else None
   }
 
+  def applyCapture(move: Move): Option[Board] = {
+    if (isOccupiedAt(move.from) && isOccupiedAt(move.to)) {
+      if (getAt(move.from).get.color == getAt(move.to).get.color)
+        None
+      else {
+        val moved = getAt(move.from).get
+        this.remove(move.from).replace(move.to, moved)
+      }
+    }
+    else None
+  }
+
   def possibleMoves(pos: Point): List[Point] = {
     if (isEmptyAt(pos)) List.empty[Point]
     else {

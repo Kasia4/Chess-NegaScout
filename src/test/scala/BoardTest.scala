@@ -296,4 +296,62 @@ class BoardTest extends org.scalatest.FunSuite{
       .add(to, piece2).get
       .applyMove(Move(from, to)).isEmpty)
   }
+
+  test("After capturing, origin field is empty") {
+    val from = Point(1,1)
+    val to = Point(1,7)
+    val piece = Piece(Queen, Black)
+    val piece2 = Piece(Knight, White)
+    assert(
+      Board()
+        .add(from, piece).get
+        .add(to, piece2).get
+        .applyCapture(Move(from, to)).get
+        .getAt(from).isEmpty
+    )
+  }
+
+  test("After capturing, attacking piece is on target field") {
+    val from = Point(1,1)
+    val to = Point(1,7)
+    val piece = Piece(Queen, Black)
+    val piece2 = Piece(Knight, White)
+    assert(
+      Board()
+        .add(from, piece).get
+        .add(to, piece2).get
+        .applyCapture(Move(from, to)).get
+        .getAt(to).get == piece
+    )
+  }
+
+  test("applyCapture returns None if origin field is empty") {
+    assert(
+      Board().applyCapture(Move(Point(1,1), Point(5,1))).isEmpty
+    )
+  }
+
+  test("applyCapture returns None if target field is empty") {
+    val from = Point(1,1)
+    val to = Point(5,5)
+    assert(
+      Board()
+        .add(from, Piece(Queen, White)).get
+        .applyCapture(Move(from, to)).isEmpty
+    )
+  }
+
+  test("applyCapture return None if both pieces have same color") {
+    val from = Point(1,1)
+    val to = Point(5,5)
+    val piece = Piece(Queen, Black)
+    val piece2 = Piece(Knight, Black)
+    assert(
+      Board()
+        .add(from, piece).get
+        .add(to, piece2).get
+        .applyCapture(Move(from, to)).isEmpty
+    )
+  }
+
 }
