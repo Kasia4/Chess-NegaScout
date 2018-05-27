@@ -384,7 +384,8 @@ class BoardTest extends org.scalatest.FunSuite{
           Point(0,2) -> Piece(Rook, Black),
           Point(2,2) -> Piece(Knight, Black),
           Point(2,5) -> Piece(Rook, White)
-        ).toMap).get
+        ).toMap
+      ).get
         .possibleCapturesOf(White).toSet ==
         Set(
           Move(Point(1,1), Point(0,2)),
@@ -394,4 +395,17 @@ class BoardTest extends org.scalatest.FunSuite{
     )
   }
 
+  test("test canBeCaptured") {
+    val board = Board()
+        .add(
+          List(
+            Point(1,1) -> Piece(Pawn, White),
+            Point(0,2) -> Piece(Rook, Black),
+            Point(1,2) -> Piece(Knight, Black)
+          ).toMap
+        ).get
+
+    assert(board.canBeCaptured(Point(0,2)))
+    assert(!board.canBeCaptured(Point(1,2)))
+  }
 }

@@ -120,6 +120,10 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
     }).flatten.toList
   }
 
+  def canBeCaptured(pos: Point): Boolean = {
+    if (isEmptyAt(pos)) false
+    else possibleCapturesOf(getAt(pos).get.color.opponent).exists(_.to == pos)
+  }
 }
 
 object Board {
