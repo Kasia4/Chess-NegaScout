@@ -35,14 +35,6 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
     }.filter(isEmptyAt)
   }
 
-  def findOccupiedFieldInDirection(from: Point, dir: Direction): Option[Point] = {
-    if (rect contains from) {
-      if (isEmptyAt(from)) findOccupiedFieldInDirection(from + dir.vec, dir)
-      else Some(from)
-    }
-    else None
-  }
-
   def scanDirs(dirs: List[Direction], start: Point): List[Point] = {
     (for (dir <- dirs) yield
       rect.pathToBorder(start, dir).span(isEmptyAt)._1).flatten
