@@ -124,6 +124,8 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
     if (isEmptyAt(pos)) false
     else possibleCapturesOf(getAt(pos).get.color.opponent).exists(_.to == pos)
   }
+
+  def checkOf(color: Color): Boolean = canBeCaptured(kingPosition(color))
 }
 
 object Board {

@@ -397,15 +397,27 @@ class BoardTest extends org.scalatest.FunSuite{
 
   test("test canBeCaptured") {
     val board = Board()
-        .add(
-          List(
-            Point(1,1) -> Piece(Pawn, White),
-            Point(0,2) -> Piece(Rook, Black),
-            Point(1,2) -> Piece(Knight, Black)
-          ).toMap
-        ).get
-
+      .add(
+        List(
+          Point(1,1) -> Piece(Pawn, White),
+          Point(0,2) -> Piece(Rook, Black),
+          Point(1,2) -> Piece(Knight, Black)
+        ).toMap
+      ).get
     assert(board.canBeCaptured(Point(0,2)))
     assert(!board.canBeCaptured(Point(1,2)))
+  }
+
+  test("If check on king is possible checkOf returns true") {
+    val board = Board()
+      .add(
+        List(
+          Point(1,1) -> Piece(King, White),
+          Point(7,7) -> Piece(Queen, Black),
+          Point(1,7) -> Piece(King, Black)
+        ).toMap
+      ).get
+    assert(board.checkOf(White))
+    assert(!board.checkOf(Black))
   }
 }
