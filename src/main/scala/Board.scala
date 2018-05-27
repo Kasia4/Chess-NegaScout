@@ -19,6 +19,15 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
     else None
   }
 
+  def undo(move_log: MoveLog): Option[Board] = {
+    val move = move_log.move
+    if (isEmptyAt(move.to) || isOccupiedAt(move.from)) None
+    else if (move_log.captured.isEmpty)
+      Some(Board(pieces + (move.from -> getAt(move.to).get) - move_log.move.to))
+    else
+      Some(Board(pieces + (move.from -> getAt(move.to).get, move.to -> move_log.captured.get)))
+  }
+
   def remove(pos: Point) = Board(pieces - pos)
 
   def isEmptyAt(pos: Point): Boolean = pieces.get(pos).isEmpty && rect.contains(pos)

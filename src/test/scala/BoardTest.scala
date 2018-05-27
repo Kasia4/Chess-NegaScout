@@ -461,4 +461,22 @@ class BoardTest extends org.scalatest.FunSuite{
         .applyLegalMove(Move(Point(1,1), Point(1,2)), White).isEmpty
     )
   }
+
+  test("Undo returns None if target field is empty") {
+    assert(
+      Board().undo(MoveLog(Move(Point(3,1), Point(1,1)))).isEmpty
+    )
+  }
+
+  test("Undo move piece from target field to origin field") {
+    val origin = Point(1,1)
+    val target = Point(3,1)
+    val pawn = Piece(Pawn, White)
+    assert(
+      Board()
+        .add(target, pawn).get
+        .undo(MoveLog(Move(origin, target))).get
+        .getAt(origin).get == pawn
+    )
+  }
 }
