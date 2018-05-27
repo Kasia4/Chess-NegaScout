@@ -148,8 +148,8 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
 object Board {
   val startBoard: Board = {
     val types = IndexedSeq(Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook)
-    val w_pawn = Piece(Pawn, White)
-    val b_pawn = Piece(Pawn, Black)
+    val w_pawn = Piece(Pawn, White, false)
+    val b_pawn = Piece(Pawn, Black, false)
     val row = Point(-1, 0).path(Right.vec, length = 8).toIndexedSeq
     val pieces =
       (for (i <- 0 to 7) yield List(
