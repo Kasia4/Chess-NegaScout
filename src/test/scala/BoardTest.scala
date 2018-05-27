@@ -58,11 +58,11 @@ class BoardTest extends org.scalatest.FunSuite{
     assert(board.findOccupiedFieldInDirection(Point(1, 0), Left).isEmpty )
   }
 
-  test("test canMove") {
+  test("test isEmptyAt") {
     val board = Board().add(Point(5,2), Piece(Bishop, White)).get
-    assert(board.canMove(Point(5,3)))
-    assert(!board.canMove(Point(9,10)))
-    assert(!board.canMove(Point(5,2)))
+    assert(board.isEmptyAt(Point(5,3)))
+    assert(!board.isEmptyAt(Point(9,10)))
+    assert(!board.isEmptyAt(Point(5,2)))
   }
 
   test("test scanDirs") {
@@ -185,4 +185,28 @@ class BoardTest extends org.scalatest.FunSuite{
     assert(!moves.contains(Point(2,1)))
     assert(!moves.contains(Point(1,3)))
   }
+
+  test("scan opponent returns first opponent piece encountered in every given direction") {
+    val board = Board()
+      .add(Point(1,1), Piece(Queen, White)).get
+      .add(Point(3,1), Piece(Rook, Black)).get
+
+    val fields = board.scanOpponent(List(Down), Point(1,3), Black)
+    assert(fields.contains(Point(1,1)))
+    assert(!fields.contains(Point(3,1)))
+  }
+
+  test("if there is no opponent in given direction, scanOpponent returns empty list") {
+    val board = Board()
+    assert(board.scanOpponent(List(Right), Point(3,3), Black).isEmpty)
+  }
+
+  test("if opponent piece is covered by player's piece, scanOpponent returns empty list") {
+    val board = Board()
+      .add(Point(1,1), Piece(Pawn, Black)).get
+      .add(Point(2,1), Piece(Rook, White)).get
+    assert(board.scanOpponent(List(Right), Point(0,1), Black).isEmpty)
+  }
+
+
 }

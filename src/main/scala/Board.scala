@@ -9,9 +9,10 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
   }
 
   def remove(pos: Point) = Board(pieces - pos)
-  def isEmptyAt(pos: Point): Boolean = pieces.get(pos).isEmpty
+  def isEmptyAt(pos: Point): Boolean = pieces.get(pos).isEmpty && rect.contains(pos)
   def isOccupiedAt(pos: Point): Boolean = pieces.get(pos).isDefined
   def getAt(pos: Point):Option[Piece] = pieces.get(pos)
+  def getAt(pos_opt: Option[Point]): Option[Piece] = if (pos_opt.isEmpty) None else getAt(pos_opt.get)
   def ofColor(color: Color): Map[Point, Piece] = pieces.filter(p => p._2.color == color)
   def ofType(pieceType: PieceType): Map[Point, Piece] = pieces.filter(p => p._2.ptype == pieceType)
 
@@ -24,15 +25,14 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
       piece.ptype match {
         case Pawn => {
           val dist = if (piece.moved) 1 else 2
-          val dir = if (piece.color == White) Up.vec else Down.vec
+          val dir = piece.color.direction
           pos.path(dir, dist).toList.span(isEmptyAt)._1
         }
         case Knight => pos.lNeighbors()
         case King => pos.neighbors()
         case dir_piece: DirectionalType => scanDirs(dir_piece.dirs, pos)
       }
-    }.filter(canMove)
-
+    }.filter(isEmptyAt)
   }
 
   def findOccupiedFieldInDirection(from: Point, dir: Direction): Option[Point] = {
@@ -48,6 +48,14 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
       rect.pathToBorder(start, dir).span(isEmptyAt)._1).flatten
   }
 
-  def canMove(pos: Point): Boolean = isEmptyAt(pos) && rect.contains(pos)
+  def scanOpponent(dirs: List[Direction], start: Point, color: Color): List[Point] = {
+    val opts = for(dir <- dirs) yield {
+      rect.findInDirection(start, dir, isOccupiedAt)
+    }
+    for (opt <- opts if opt.isDefined && isOpponent(opt.get, color)) yield opt.get
+
+  }
+
+  def isOpponent(pos: Point, color: Color): Boolean = isOccupiedAt(pos) && getAt(pos).get.color == color.opponent
 }
 
