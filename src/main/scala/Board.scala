@@ -98,4 +98,19 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
   def isOpponent(pos: Point, color: Color): Boolean = isOccupiedAt(pos) && getAt(pos).get.color == color.opponent
 }
 
-
+object Board {
+  val startBoard: Board = {
+    val types = IndexedSeq(Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook)
+    val w_pawn = Piece(Pawn, White)
+    val b_pawn = Piece(Pawn, Black)
+    val row = Point(-1, 0).path(Right.vec, length = 8).toIndexedSeq
+    val pieces =
+      (for (i <- 0 to 7) yield List(
+        row(i) -> Piece(types(i), White),
+        row(i) + Point(0, 1) -> w_pawn,
+        row(i) + Point(0, 6) -> b_pawn,
+        row(i) + Point(0, 7) -> Piece(types(i), Black)
+      ).flatten).flatten.toMap[Point, Piece]
+    Board(pieces)
+  }
+}
