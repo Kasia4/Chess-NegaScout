@@ -462,6 +462,35 @@ class BoardTest extends org.scalatest.FunSuite{
     )
   }
 
+  test("applyLegalMove returns executed move log") {
+    val from = Point(1,1)
+    val to = Point(1,2)
+    assert(
+      Board()
+        .add(from, Piece(King,White)).get
+        .applyLegalMove(Move(from, to), White)
+        .get._2 == MoveLog(Move(from,to))
+    )
+  }
+
+  test("applyLegalMove returns executed capture log") {
+    val from = Point(1,1)
+    val to = Point(1,2)
+    val move = Move(from, to)
+    val pawn = Piece(Pawn, Black)
+    assert(
+      Board()
+        .add(
+          List(
+            from -> Piece(King,White),
+            to -> pawn
+          ).toMap
+        ).get
+        .applyLegalMove(move, White)
+        .get._2 == MoveLog(move,Some(pawn))
+    )
+  }
+
   test("Undo returns None if target field is empty") {
     assert(
       Board().undo(MoveLog(Move(Point(3,1), Point(1,1)))).isEmpty
