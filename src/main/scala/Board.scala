@@ -37,18 +37,18 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
   def ofColor(color: Color): Map[Point, Piece] = pieces.filter(p => p._2.color == color)
   def ofType(pieceType: PieceType): Map[Point, Piece] = pieces.filter(p => p._2.ptype == pieceType)
 
-  def applyLegalMove(move: Move, color: Color): Option[Board] = {
+  def applyLegalMove(move: Move, color: Color): Option[(Board, MoveLog)] = {
     if (getAt(move.from).isEmpty || getAt(move.from).get.color != color) None
     else {
       if (possibleMoves(move.from).contains(move.to)) {
         val after = applyMove(move).get
         if (after.checkOf(color)) None
-        else Some(after)
+        else Some(after, MoveLog(move))
       }
       else if (possibleCaptures(move.from).contains(move.to)) {
         val after = applyCapture(move).get
         if (after.checkOf(color)) None
-        else Some(after)
+        else Some(after, MoveLog(move, getAt(move.to)))
       }
       else None
     }
