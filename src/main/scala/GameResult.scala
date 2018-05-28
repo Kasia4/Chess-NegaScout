@@ -1,8 +1,13 @@
 package chess.board
 
-trait GameResult
+trait GameResult {
+  def message(): String
+}
 
 trait Finished extends GameResult {}
+trait Pending extends GameResult {
+  val current: Color
+}
 
 trait Win extends Finished {
   val winner: Color
@@ -10,14 +15,18 @@ trait Win extends Finished {
 
 case class WhiteWin() extends Win {
   override val winner: Color = White
+  override def message(): String = "White win!"
 }
 
 case class BlackWin() extends Win {
   override val winner: Color = Black
+  override def message(): String = "Black win!"
 }
 
-case class Pending() extends GameResult
+case class Check(override val current: Color) extends Pending {
+  override def message(): String = current.toString + "checked"
+}
 
-case class Resignation(override val winner: Color) extends Win
-
-case class Draw() extends Finished
+case class Draw() extends Finished {
+  override def message(): String = "Draw"
+}
