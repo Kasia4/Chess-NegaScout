@@ -9,7 +9,12 @@ case class GameState(current_player: Color = White,
   def applyMove(move: Move): Option[GameState] = {
     val opt_board = board.applyLegalMove(move, current_player)
     if (opt_board.isEmpty) None
-    else Some(GameState(current_player.opponent, opt_board.get._1))
+    else Some(GameState(current_player.opponent, opt_board.get._1, opt_board.get._2 +: history))
+  }
+
+  def undo(): Option[GameState] = {
+    if (history.isEmpty) None
+    else Some(GameState(current_player.opponent, board.undo(history.head).get, history.tail))
   }
 
 }
