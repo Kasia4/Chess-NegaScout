@@ -24,7 +24,7 @@ object Board {
     frame.toString * (2 + (field_size + 1) * fields_nb)
   }
 
-  def giveString(board: chess.board.Board, active: Option[Point] = None ): String = {
+  def giveString(board: chess.board.Board, active: Set[Point] ): String = {
     val size = board.rect.size
     val sep = separatorLine(Frame, field_size = 5, fields_nb = size.x)
     val tab: IndexedSeq[String] =
@@ -32,7 +32,7 @@ object Board {
       {
         val row: IndexedSeq[Field] = for (x <- 0 until size.y) yield {
           val pos = Point(x,y)
-          if (pos == active.getOrElse(Point(-1,-1)))
+          if (active.contains(pos))
             ActiveField(fieldColor(pos), board.getAt(pos))
           else
             InactiveField(fieldColor(pos), board.getAt(pos))
@@ -42,7 +42,7 @@ object Board {
       }
 
     horizontalLabel(separator = '+',space = ' ') +
-      sep + "\n" +  tab.reduce(_ + sep + "\n" +  _) + sep
+      sep + "\n" +  tab.reduce(_ + sep + "\n" +  _) + sep + "\n"
   }
 
   def fieldColor(pos: Point): Color = {
