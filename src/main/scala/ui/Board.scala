@@ -38,7 +38,7 @@ object Board {
             InactiveField(fieldColor(pos), board.getAt(pos))
         }
 
-        mergeFields(row, y.toString)
+        mergeFields(row, (y+1).toString)
       }
 
     horizontalLabel(separator = '+',space = ' ') +
