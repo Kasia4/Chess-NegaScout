@@ -23,8 +23,11 @@ case class BlackWin() extends Win {
   override def message(): String = "Black win!"
 }
 
+case class Turn(override  val current: Color) extends Pending {
+  override def message(): String = current.toString + " move"
+}
 case class Check(override val current: Color) extends Pending {
-  override def message(): String = current.toString + "checked"
+  override def message(): String = current.toString + " checked"
 }
 
 case class Draw() extends Finished {

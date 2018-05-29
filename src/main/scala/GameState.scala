@@ -16,4 +16,16 @@ case class GameState(current_player: Color = White,
     else Some(GameState(current_player.opponent, board.undo(history.head).get, history.tail))
   }
 
+  lazy val Result: GameResult = Turn(current_player)
+
+  def result(): GameResult = {
+    Result
+  }
+
+  def isTerminated(): Boolean = {
+    Result match {
+      case _: Finished => true
+      case _: Pending => false
+    }
+  }
 }
