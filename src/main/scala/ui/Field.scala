@@ -11,9 +11,10 @@ trait Field{
 case class InactiveField(override val color: Color,
                          override val piece: Option[Piece] = None) extends Field {
   override def content: IndexedSeq[String] = {
-    val s = (if (piece.isEmpty) ' ' else piece.get.ptype.symbol).toString
-    val b = (if (piece.isEmpty) ' ' else piece.get.color.base).toString
     val bg = Field.Background(color).toString
+    val s = (if (piece.isEmpty) bg else piece.get.ptype.symbol).toString
+    val b = (if (piece.isEmpty) bg else piece.get.color.base).toString
+
     IndexedSeq(
       bg * 5,
       bg * 5,
@@ -27,9 +28,10 @@ case class InactiveField(override val color: Color,
 case class ActiveField(override val color: Color,
                        override val piece: Option[Piece] = None) extends Field {
   override def content: IndexedSeq[String] = {
-    val s = (if (piece.isEmpty) ' ' else piece.get.ptype.symbol).toString
-    val b = (if (piece.isEmpty) ' ' else piece.get.color.base).toString
     val bg = Field.Background(color).toString
+    val s = (if (piece.isEmpty) bg else piece.get.ptype.symbol).toString
+    val b = (if (piece.isEmpty) bg else piece.get.color.base).toString
+
     val f = Field.ActiveFrame.toString
     IndexedSeq(
       f * 5,
