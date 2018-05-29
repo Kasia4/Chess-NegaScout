@@ -12,8 +12,8 @@ case class InactiveField(override val color: Color,
                          override val piece: Option[Piece] = None) extends Field {
   override def content: IndexedSeq[String] = {
     val bg = Field.Background(color).toString
-    val s = (if (piece.isEmpty) bg else piece.get.ptype.symbol).toString
-    val b = (if (piece.isEmpty) bg else piece.get.color.base).toString
+    val s = Field.pieceSymbol(color, piece)
+    val b = Field.baseSymbol(color, piece)
 
     IndexedSeq(
       bg * 5,
@@ -29,8 +29,8 @@ case class ActiveField(override val color: Color,
                        override val piece: Option[Piece] = None) extends Field {
   override def content: IndexedSeq[String] = {
     val bg = Field.Background(color).toString
-    val s = (if (piece.isEmpty) bg else piece.get.ptype.symbol).toString
-    val b = (if (piece.isEmpty) bg else piece.get.color.base).toString
+    val s = Field.pieceSymbol(color, piece)
+    val b = Field.baseSymbol(color, piece)
 
     val f = Field.ActiveFrame.toString
     IndexedSeq(
@@ -47,5 +47,11 @@ case class ActiveField(override val color: Color,
 object Field {
   val ActiveFrame: Char = 'x'
   val Background: Map[Color, Char] = List(White -> '.', Black -> ' ').toMap
+
+  def background(color: Color) = Background(color).toString
+  def pieceSymbol(field_color: Color, piece: Option[Piece]): String =
+    (if (piece.isEmpty) background(field_color) else piece.get.ptype.symbol).toString
+  def baseSymbol(field_color: Color, piece: Option[Piece]): String =
+    (if (piece.isEmpty) background(field_color) else piece.get.color.base).toString
 }
 
