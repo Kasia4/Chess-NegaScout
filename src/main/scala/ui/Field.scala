@@ -17,7 +17,6 @@ case class InactiveField(override val color: Color,
 
     IndexedSeq(
       bg * 5,
-      bg * 5,
       bg * 2 + s + bg * 2,
       bg * 2 + b + bg * 2,
       bg * 5
@@ -35,7 +34,6 @@ case class ActiveField(override val color: Color,
     val f = Field.ActiveFrame.toString
     IndexedSeq(
       f * 5,
-      f + bg * 3 + f,
       f + bg + s + bg + f,
       f + bg + b + bg + f,
       f * 5

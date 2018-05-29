@@ -5,15 +5,26 @@ import chess.board.{Black, Color, Point, White}
 object Board {
   val Frame: Char = '+'
 
-  def mergeFields(fields: IndexedSeq[Field]): String = {
-    val mid = for(i <- 0 to 4) yield
-      Frame.toString + (for(f <- fields) yield f.content(i)).reduce(_+ Frame.toString +_) + Frame.toString
+  def mergeFields(fields: IndexedSeq[Field], label: String): String = {
+    val label_seq = IndexedSeq(" ", label.toString, " ", " ")
+    val mid = for(i <- 0 to 3) yield {
+      Frame.toString + (for(f <- fields) yield f.content(i)).reduce(_+ Frame.toString +_) + Frame.toString + " " +label_seq(i)
+    }
     mid.reduce(_ + "\n" + _) + "\n"
   }
-  def separatorLine(frame: Char, field_size: Int, fields_nb: Int): String = {
-    frame.toString * (1 + (field_size + 1) * fields_nb)
+
+  def horizontalLabel(separator: Char, space: Char): String = {
+    val labels = List("A", "B", "C", "D", "E", "F", "G", "H")
+    val sep = separator.toString
+    val sp = space.toString
+    (for (label <- labels) yield sep + sp * 2 + label + sp * 2).reduce(_ + _) + sep + "\n"
+
   }
-  def print(board: chess.board.Board, active: Option[Point] = None ): String = {
+  def separatorLine(frame: Char, field_size: Int, fields_nb: Int): String = {
+    frame.toString * (2 + (field_size + 1) * fields_nb)
+  }
+
+  def giveString(board: chess.board.Board, active: Option[Point] = None ): String = {
     val size = board.rect.size
     val sep = separatorLine(Frame, field_size = 5, fields_nb = size.x)
     val tab: IndexedSeq[String] =
@@ -27,10 +38,11 @@ object Board {
             InactiveField(fieldColor(pos), board.getAt(pos))
         }
 
-        mergeFields(row)
+        mergeFields(row, y.toString)
       }
 
-    sep + "\n" +  tab.reduce(_ + sep + "\n" +  _) + sep
+    horizontalLabel(separator = '+',space = ' ') +
+      sep + "\n" +  tab.reduce(_ + sep + "\n" +  _) + sep
   }
 
   def fieldColor(pos: Point): Color = {
