@@ -5,6 +5,7 @@ sealed trait Color {
   val symbol: Char
   val direction: Point
   val opponent: Color
+  val base: Char
 }
 
 case object White extends Color {
@@ -12,6 +13,7 @@ case object White extends Color {
   val symbol: Char = 'W'
   val direction: Point = Point(0,1)
   val opponent: Color = Black
+  val base: Char = '\u25A0'
 }
 
 case object Black extends Color {
@@ -19,4 +21,5 @@ case object Black extends Color {
   val symbol: Char = 'B'
   val direction: Point = Point(0,-1)
   val opponent: Color = White
+  val base: Char = '\u25A1'
 }

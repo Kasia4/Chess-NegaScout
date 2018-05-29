@@ -1,6 +1,9 @@
+import chess.board._
+import ui._
 
 object Main {
   def main(args: Array[String]): Unit = {
-    println("Hello World!")
+    val game = GameState()
+    print(ui.Board.print(game.board, Some(Point(1,1))))
   }
 }
