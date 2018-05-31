@@ -21,7 +21,7 @@ class NegaScout(heuristic: Heuristic, maxDepth: Int = 10) {
         else {
           val newAlpha = math.max(currentAlgParams._1, - negaScoutIter(curr._2, -currentAlgParams._1 - 1, -currentAlgParams._1, depth+1)._1)
             if(currentAlgParams._1 < newAlpha &&  newAlpha < currentAlgParams._2) {
-              val score = -negaScoutIter(curr._2, -currentAlgParams._2, newAlpha, depth+1)._1
+              val score = - negaScoutIter(curr._2, -currentAlgParams._2, -newAlpha, depth+1)._1
               (score, currentAlgParams._2, Some(curr._1))
             }
             else currentAlgParams
