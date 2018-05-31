@@ -2,7 +2,20 @@ package ai
 
 import chess.{GameState, Move}
 
+/**
+  * Provides logic of NegaScout algotihm used as basic AI
+  * @param heuristic
+  * @param maxDepth
+  */
 class NegaScout(heuristic: Heuristic, maxDepth: Int = 10) {
+  /**
+    * One iteration of NegaScout algorithm executed for specific node of game tree
+    * @param state
+    * @param alpha
+    * @param beta
+    * @param depth
+    * @return
+    */
   def negaScoutIter(state: GameState, alpha: Double, beta: Double, depth: Int): (Double, Option[Move]) = {
     if(state.isTerminated() || depth >= maxDepth)
       (heuristic.countStateValue(state), None)
@@ -39,9 +52,20 @@ class NegaScout(heuristic: Heuristic, maxDepth: Int = 10) {
     (bestMove._1, bestMove._3)
   }
 
+  /**
+    * Executes algorithm for root of game tree
+    * @param gameState
+    * @return
+    */
   def negaScout(gameState: GameState): (Double, Option[Move]) =
     negaScoutIter(gameState, Double.NegativeInfinity, Double.PositiveInfinity, 0)
 
+  /**
+    * Helper function for mapping moves to pair of move and state reached by applying this specific move
+    * @param move
+    * @param initialState
+    * @return
+    */
   private def makeMoveStatePair(move: Move, initialState: GameState): (Move, GameState) = (move, initialState.applyMove(move).get)
 
 }
