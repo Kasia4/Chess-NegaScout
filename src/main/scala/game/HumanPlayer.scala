@@ -11,27 +11,17 @@ case class HumanPlayer(col: Color) extends Player {
     Move(from, to)
   }
 
-  def readPiecePosition(gameState: GameState): Point = {
-    val pieces_pos = gameState.board.ofColor(col).keys.toSet
-    var from: Point = Point(-1,-1)
-    do {
-      UI.displayGame(gameState, prompt = Some(ChoosePiece(color)))
-      val input = Notation.parseField(scala.io.StdIn.readLine())
-      if (input.isSuccess)
-        from = input.get
-    } while (!pieces_pos.contains(from))
-    from
+  def readPiecePosition(state: GameState): Point = {
+    val pieces_pos = state.board.ofColor(col).keys.toSet
+    def display(): Unit = UI.displayGame(state, prompt = Some(ChoosePiece(col)))
+
+    PlayerInput.readField(pieces_pos.contains, display)
   }
 
   def readTargetPosition(gameState: GameState, from: Point): Point = {
     val possible_targets = gameState.board.possibleMoves(from) ::: gameState.board.possibleCaptures(from)
-    var to: Point = Point(-1, -1)
-    do {
-      UI.displayGame(gameState, active_fiedls = possible_targets.toSet, prompt = Some(ChooseTarget(color)))
-      val input = Notation.parseField(scala.io.StdIn.readLine())
-      if (input.isSuccess)
-        to = input.get
-    } while(!possible_targets.contains(to))
-    to
+    def display(): Unit = UI.displayGame(gameState,active_fiedls = possible_targets.toSet, prompt = Some(ChoosePiece(col)))
+
+    PlayerInput.readField(possible_targets.contains, display)
   }
 }
