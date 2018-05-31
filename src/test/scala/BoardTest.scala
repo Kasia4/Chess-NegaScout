@@ -508,4 +508,70 @@ class BoardTest extends org.scalatest.FunSuite{
         .getAt(origin).get == pawn
     )
   }
+
+  test("If there is checkmate, checkateOf returns true") {
+    assert(
+      Board()
+        .add(
+          List(
+            Point(7,3) -> Piece(Queen, White),
+            Point(6,4) -> Piece(Rook, White),
+            Point(7,5) -> Piece(King, Black)
+          ).toMap
+        ).get
+        .checkmateOf(Black)
+    )
+  }
+
+  test("If there is no check, checkmateOf returns false") {
+    assert(
+      !Board()
+        .add(Point(5,5), Piece(King, Black)).get
+        .checkmateOf(Black)
+    )
+  }
+
+  test("If king can escape, checkmateOf returns false") {
+    assert(
+      !Board()
+        .add(
+          List(
+            Point(7,3) -> Piece(Queen, White),
+            Point(7,5) -> Piece(King, Black)
+          ).toMap
+        ).get
+        .checkmateOf(Black)
+    )
+  }
+
+  test("If only attacker can be captured, checkmateOf returns false") {
+    assert(
+      !Board()
+        .add(
+          List(
+            Point(5,7) -> Piece(Queen, White),
+            Point(5,6) -> Piece(Rook, White),
+            Point(7,7) -> Piece(King, Black),
+            Point(0,7) -> Piece(Rook, Black)
+          ).toMap
+        ).get
+        .checkmateOf(Black)
+    )
+  }
+
+  test("If check can be blocked, checkmateOf returns false") {
+    assert(
+      !Board()
+        .add(
+          List(
+            Point(5,7) -> Piece(Rook, White),
+            Point(5,6) -> Piece(Rook, White),
+            Point(3,0) -> Piece(Rook, Black),
+            Point(7,7) -> Piece(King, Black),
+            Point(0,7) -> Piece(Queen, White)
+          ).toMap
+        ).get
+        .checkmateOf(Black)
+    )
+  }
 }
