@@ -16,7 +16,13 @@ case class GameState(current_player: Color = White,
     else Some(GameState(current_player.opponent, board.undo(history.head).get, history.tail))
   }
 
-  lazy val Result: GameResult = Turn(current_player)
+  lazy val Result: GameResult = {
+    if (board.checkmateOf(White))
+      BlackWin()
+    else if (board.checkmateOf(Black))
+      WhiteWin()
+    else Turn(current_player)
+  }
 
   def result(): GameResult = {
     Result
