@@ -146,6 +146,13 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
     }).flatten.toList
   }
 
+  def possibleMovesOf(color: Color): List[Move] = {
+    (for(piece <- ofColor(color)) yield {
+      possibleMoves(piece._1).map(Move(piece._1, _))
+    }).flatten.toList
+  }
+
+
   def canBeCaptured(pos: Point): Boolean = {
     if (isEmptyAt(pos)) false
     else possibleCapturesOf(getAt(pos).get.color.opponent).exists(_.to == pos)
