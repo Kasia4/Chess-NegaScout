@@ -108,6 +108,10 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
     }
   }
 
+  def allPossibleMoves(pos: Point): List[Point] = {
+    possibleMoves(pos) ::: possibleCaptures(pos)
+  }
+
   def scanDirs(dirs: List[Direction], start: Point): List[Point] = {
     (for (dir <- dirs) yield
       rect.pathToBorder(start, dir).span(isEmptyAt)._1).flatten
@@ -169,6 +173,4 @@ object Board {
       )).flatten.toMap[Point, Piece]
     Board(pieces)
   }
-
-
 }

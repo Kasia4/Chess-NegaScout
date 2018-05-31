@@ -13,14 +13,15 @@ case class HumanPlayer(col: Color) extends Player {
 
   def readPiecePosition(state: GameState): Point = {
     val pieces_pos = state.board.ofColor(col).keys.toSet
+    def movable(pos: Point): Boolean = pieces_pos.contains(pos) && state.board.allPossibleMoves(pos).nonEmpty
     def display(): Unit = UI.displayGame(state, prompt = Some(ChoosePiece(col)))
 
-    PlayerInput.readField(pieces_pos.contains, display)
+    PlayerInput.readField(movable, display)
   }
 
   def readTargetPosition(gameState: GameState, from: Point): Point = {
-    val possible_targets = gameState.board.possibleMoves(from) ::: gameState.board.possibleCaptures(from)
-    def display(): Unit = UI.displayGame(gameState,active_fiedls = possible_targets.toSet, prompt = Some(ChoosePiece(col)))
+    val possible_targets = gameState.board.allPossibleMoves(from)
+    def display(): Unit = UI.displayGame(gameState,active_fiedls = possible_targets.toSet, prompt = Some(ChooseTarget(col)))
 
     PlayerInput.readField(possible_targets.contains, display)
   }
