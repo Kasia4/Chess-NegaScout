@@ -1,12 +1,10 @@
-import chess.{GameState, White}
+import chess.{Black, GameState, White}
 import game.HumanPlayer
+import game.Game
 
 object Main {
   def main(args: Array[String]): Unit = {
     val player = HumanPlayer(White)
-    val game = GameState()
-
-    player.executeMove(game)
-//    print(game.ui.Board.print(game.board, Some(Point(1,1))))
+    Game.start(HumanPlayer(White), HumanPlayer(Black))
   }
 }
