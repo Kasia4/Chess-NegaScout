@@ -156,13 +156,47 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
     }).flatten.toList
   }
 
-
+  def possibleCapturesOf(pos: Point): List[Move] = {
+    val target_piece = getAt(pos)
+    if (target_piece.isEmpty) List.empty[Move]
+    else {
+      possibleCapturesOf(target_piece.get.color.opponent)
+        .filter(_.to == pos)
+    }
+  }
   def canBeCaptured(pos: Point): Boolean = {
     if (isEmptyAt(pos)) false
     else possibleCapturesOf(getAt(pos).get.color.opponent).exists(_.to == pos)
   }
 
   def checkOf(color: Color): Boolean = canBeCaptured(kingPosition(color))
+
+  def checkmateOf(color: Color): Boolean = {
+    if (!checkOf(color)) false
+    else {
+      val kingpos = kingPosition(color)
+      val can_escape =
+        possibleMoves(kingpos)
+          .map(Move(kingpos, _))
+          .map(applyMove)
+          .map(_.get)
+          .exists(!_.checkOf(color))
+
+      val attackers_pos = possibleCapturesOf(kingpos)
+        .map(_.from)
+
+      val can_capture_attacker =
+        attackers_pos
+          .flatMap(possibleCapturesOf)
+          .map(applyCapture)
+          .map(_.get)
+          .exists(!_.checkOf(color))
+
+      val attackers = attackers_pos.map(getAt(_).get)
+
+      !(can_escape || can_capture_attacker)
+    }
+  }
 }
 
 object Board {

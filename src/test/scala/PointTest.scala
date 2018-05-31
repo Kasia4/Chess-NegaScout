@@ -144,4 +144,21 @@ class PointTest extends org.scalatest.FunSuite {
       Point(3,6), Point(5,6), Point(2,5), Point(6,5),
       Point(2,3), Point(6,3), Point(3,2), Point(5,2)))
   }
+
+  test("pointsBetween returns points properly when given points lays on horizontal line") {
+    assert(
+      Point(3,0).pointsBetween(Point(0,0)) == IndexedSeq(Point(2,0), Point(1,0))
+    )
+  }
+
+  test("pointsBetween returns points properly when given points lays on vertical line") {
+    assert(
+      Point(0,3).pointsBetween(Point(0,0)) == IndexedSeq(Point(0,2), Point(0,1))
+    )
+  }
+
+  test("pointsBetween returns points properly when given points lays on diagonal") {
+    assert(Point(3,3).pointsBetween(Point(0,0)) == IndexedSeq(Point(2,2), Point(1,1)))
+    assert(Point(3,0).pointsBetween(Point(0,3)) == IndexedSeq(Point(2,1), Point(1,2)))
+  }
 }
