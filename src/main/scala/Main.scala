@@ -1,10 +1,8 @@
 import chess.{Black, GameState, White}
-import game.HumanPlayer
-import game.Game
+import game.{AIPlayer, Game, HumanPlayer}
 
 object Main {
   def main(args: Array[String]): Unit = {
-    val player = HumanPlayer(White)
-    Game.start(HumanPlayer(White), HumanPlayer(Black))
+    Game.start(HumanPlayer(White), AIPlayer(Black))
   }
 }

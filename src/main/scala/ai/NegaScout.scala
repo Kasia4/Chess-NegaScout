@@ -7,7 +7,7 @@ import chess.{GameState, Move}
   * @param heuristic
   * @param maxDepth
   */
-class NegaScout(heuristic: Heuristic, maxDepth: Int = 10) {
+case class NegaScout(heuristic: Heuristic, maxDepth: Int = 10) {
   /**
     * One iteration of NegaScout algorithm executed for specific node of game tree
     * @param state
