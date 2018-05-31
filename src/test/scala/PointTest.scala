@@ -1,4 +1,4 @@
-import chess.board.{Point, Up}
+import chess.{Point, Up}
 
 class PointTest extends org.scalatest.FunSuite {
   test("when points are added, result is sum of them") {

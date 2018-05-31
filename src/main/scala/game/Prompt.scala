@@ -1,4 +1,6 @@
-package chess.board
+package game
+
+import chess.Color
 
 trait Prompt {
   def content: String

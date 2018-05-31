@@ -1,4 +1,4 @@
-package chess.board
+package chess
 
 case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle(Point(8,8))) {
 

@@ -1,4 +1,4 @@
-import chess.board._
+import chess._
 
 class PieceTest extends org.scalatest.FunSuite {
   test("test unmoved white pawn moves") {

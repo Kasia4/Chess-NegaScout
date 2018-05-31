@@ -1,4 +1,4 @@
-package chess.board
+package chess
 
 case class GameState(current_player: Color = White,
                      board: Board = Board.startBoard,

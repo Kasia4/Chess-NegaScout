@@ -1,4 +1,4 @@
-package chess.board
+package chess
 
 trait GameResult {
   def message(): String

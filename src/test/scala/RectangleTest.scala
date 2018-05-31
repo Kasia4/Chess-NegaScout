@@ -1,4 +1,4 @@
-import chess.board._
+import chess.{Down, DownLeft, DownRight, Point, Rectangle, Up, UpLeft, UpRight}
 
 class RectangleTest extends org.scalatest.FunSuite{
   test("Test contains function") {
@@ -11,8 +11,8 @@ class RectangleTest extends org.scalatest.FunSuite{
     val rect = Rectangle(Point(8,8))
     assert(rect.distToBorder(Point(2,3), Up) == 4)
     assert(rect.distToBorder(Point(2,3), Down) == 3)
-    assert(rect.distToBorder(Point(2,3), Left) == 2)
-    assert(rect.distToBorder(Point(2,3), Right) == 5)
+    assert(rect.distToBorder(Point(2,3), chess.Left) == 2)
+    assert(rect.distToBorder(Point(2,3), chess.Right) == 5)
     assert(rect.distToBorder(Point(2,3), UpRight) == 4)
     assert(rect.distToBorder(Point(2,3), UpLeft) == 2)
     assert(rect.distToBorder(Point(2,3), DownRight) == 3)

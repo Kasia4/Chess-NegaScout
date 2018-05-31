@@ -1,4 +1,4 @@
-package chess.board
+package chess
 
 case class Move (from: Point, to: Point)
 

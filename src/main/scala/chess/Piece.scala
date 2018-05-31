@@ -1,4 +1,4 @@
-package chess.board
+package chess
 
 sealed trait PieceType {
   val name: String

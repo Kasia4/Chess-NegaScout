@@ -1,4 +1,4 @@
-import chess.board._
+import chess._
 
 class GameStateTest extends org.scalatest.FunSuite {
   test("When move is legal, applyMove returns new GameState") {

@@ -1,4 +1,4 @@
-import chess.board._
+import chess._
 
 class BoardTest extends org.scalatest.FunSuite{
   test("When piece is added to board, pieces map contains it") {
@@ -192,14 +192,14 @@ class BoardTest extends org.scalatest.FunSuite{
 
   test("if there is no opponent in given direction, scanOpponent returns empty list") {
     val board = Board()
-    assert(board.scanOpponent(List(Right), Point(3,3), Black).isEmpty)
+    assert(board.scanOpponent(List(chess.Right), Point(3,3), Black).isEmpty)
   }
 
   test("if opponent piece is covered by player's piece, scanOpponent returns empty list") {
     val board = Board()
       .add(Point(1,1), Piece(Pawn, Black)).get
       .add(Point(2,1), Piece(Rook, White)).get
-    assert(board.scanOpponent(List(Right), Point(0,1), Black).isEmpty)
+    assert(board.scanOpponent(List(chess.Right), Point(0,1), Black).isEmpty)
   }
 
   test("White pawn can capture opponent's pieces on fields on corners above it") {

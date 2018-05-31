@@ -1,8 +1,8 @@
-package ui
+package game.ui
 
-import chess.board.{Black, Color, Point, White}
+import chess.{Black, Board, Color, Point, White}
 
-object Board {
+object BoardUI {
   val Frame: Char = '+'
 
   def mergeFields(fields: IndexedSeq[Field], label: String): String = {
@@ -24,7 +24,7 @@ object Board {
     frame.toString * (2 + (field_size + 1) * fields_nb)
   }
 
-  def giveString(board: chess.board.Board, active: Set[Point] ): String = {
+  def giveString(board: Board, active: Set[Point] ): String = {
     val size = board.rect.size
     val sep = separatorLine(Frame, field_size = 5, fields_nb = size.x)
     val tab: IndexedSeq[String] =

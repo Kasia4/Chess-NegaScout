@@ -1,6 +1,6 @@
-package ui
+package game.ui
 
-import chess.board.{Black, Color, Piece, White}
+import chess.{Black, Color, Piece, White}
 
 trait Field{
   val piece: Option[Piece]
