@@ -1,8 +1,10 @@
 package ai
-import chess.GameState
+import chess.{Color, GameState}
 
-class BasicHeuristic extends Heuristic {
-  override def countStateValue(gameState: GameState): Double = {
+case class BasicHeuristic(color: Color) extends Heuristic {
+  override def countStateValue(gameState: GameState): Double =
+    countPiecesValues(gameState, color) - countPiecesValues(gameState, color.opponent)
 
-  }
+  def countPiecesValues(gameState: GameState, color: Color): Double =
+    gameState.board.ofColor(color).map(_._2.ptype.value).sum
 }
