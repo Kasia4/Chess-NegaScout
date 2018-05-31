@@ -1,5 +1,7 @@
 package chess
 
+import scala.collection
+
 case class Point(x: Int, y: Int) {
 
   def +(other: Point): Point = {
@@ -55,4 +57,21 @@ case class Point(x: Int, y: Int) {
     for(x <- List(-1,0,1);
         y <- List(-1,0,1) if x != 0 || y != 0)
       yield this + Point(x, y)
+
+  def pointsBetween(other: Point): IndexedSeq[Point] = {
+    if (this == other) IndexedSeq.empty[Point]
+    else if (!(onSameDiagonal(other) || onSameLine(other))) IndexedSeq.empty[Point]
+    else {
+      val x =
+        if (this.x == other.x) 0
+        else if (this atLeft other) 1
+        else -1
+      val y =
+        if (this.y == other.y) 0
+        else if (this below other) 1
+        else -1
+      path(Point(x, y), Math.max(distX(other), distY(other)) -1 )
+    }
+  }
+
 }
