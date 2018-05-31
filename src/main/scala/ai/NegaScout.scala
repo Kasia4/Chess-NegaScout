@@ -39,7 +39,7 @@ class NegaScout(heuristic: Heuristic, maxDepth: Int = 10) {
     (bestMove._1, bestMove._3)
   }
 
-  def negaScout(heuristic: Heuristic, gameState: GameState): (Double, Option[Move]) =
+  def negaScout(gameState: GameState): (Double, Option[Move]) =
     negaScoutIter(gameState, Double.NegativeInfinity, Double.PositiveInfinity, maxDepth)
 
   private def makeMoveStatePair(move: Move, initialState: GameState): (Move, GameState) = (move, initialState.applyMove(move).get)
