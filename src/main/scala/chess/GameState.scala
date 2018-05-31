@@ -22,6 +22,10 @@ case class GameState(current_player: Color = White,
     Result
   }
 
+  def possibleMoves() : List[Move] = {
+    board.possibleMovesOf(current_player)
+  }
+
   def isTerminated(): Boolean = {
     Result match {
       case _: Finished => true
