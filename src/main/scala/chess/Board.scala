@@ -1,10 +1,5 @@
 package chess
 
-/**
-  *
-  * @param pieces map with assignments Pieces to Fields
-  * @param rect = Board range
-  */
 case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle(Point(8,8))) {
 
   /**
