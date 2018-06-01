@@ -24,6 +24,11 @@ object Notation {
       Failure(new IllegalArgumentException)
   }
 
+  /**
+    * Tries parse field symbol to field position
+    * @param in field symbol to parse
+    * @return parsing result or Failure
+    */
   def parseField(in: String): Try[Point] = {
     if (in.length() != 2) Failure(new IllegalArgumentException)
     else {
