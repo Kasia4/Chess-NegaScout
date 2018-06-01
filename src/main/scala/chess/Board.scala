@@ -260,7 +260,11 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
       (for (x <- 0 to 7) yield {
         val opt = getAt(Point(x, y))
         if (opt.isEmpty) ' '
-        else opt.get.ptype.symbol
+        else opt.get.color match
+        {
+          case White => opt.get.ptype.symbol.toUpper
+          case Black => opt.get.ptype.symbol.toLower
+        }
       }).mkString + '\n').mkString
   }
 
@@ -314,6 +318,12 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
       possibleCapturesOf(target_piece.get.color.opponent)
         .filter(_.to == pos)
     }
+  }
+
+  def allPossibleMovesOf(color: Color): List[Move] = {
+    (for (piece <- ofColor(color)) yield {
+      allPossibleMoves(piece._1).map(Move(piece._1, _))
+    }).flatten.toList
   }
 
   /**

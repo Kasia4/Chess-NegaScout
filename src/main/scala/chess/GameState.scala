@@ -39,7 +39,7 @@ case class GameState(current_player: Color = White,
   }
 
   def possibleMoves() : List[Move] = {
-    board.possibleMovesOf(current_player)
+    board.allPossibleMovesOf(current_player)
   }
 
   /**
