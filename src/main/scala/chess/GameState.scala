@@ -46,7 +46,7 @@ case class GameState(current_player: Color = White,
     * Checks if game is ended
     * @return
     */
-  def isTerminated(): Boolean = {
+  def isTerminated: Boolean = {
     Result match {
       case _: Finished => true
       case _: Pending => false

@@ -1,4 +1,4 @@
-import chess.{Black, GameState, White}
+import chess.{Black, White}
 import game.{AIPlayer, Game, HumanPlayer}
 
 object Main {

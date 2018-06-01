@@ -59,11 +59,10 @@ case object King extends PieceType {
 
 case class Piece(ptype: PieceType, color: Color, moved: Boolean = true) {
   def canMove(pos: Point, to: Point): Boolean = ptype match {
-    case Pawn => {
+    case Pawn =>
       val maxDist: Int = if (moved) 1 else 2
       if (color == White) pos.below(to) && pos.distX(to) == 0 && pos.distY(to) <= maxDist
       else pos.above(to) && pos.distX(to) == 0 && pos.distY(to) <= maxDist
-    }
     case Knight => pos.isLNeighbor(to)
     case Bishop => pos.onSameDiagonal(to)
     case Rook => pos.onSameLine(to)
@@ -72,10 +71,9 @@ case class Piece(ptype: PieceType, color: Color, moved: Boolean = true) {
   }
 
   def canAttack(pos: Point, to: Point): Boolean = ptype match {
-    case Pawn => {
+    case Pawn =>
       if (color == White) pos.below(to) && pos.distX(to) == 1 && pos.distY(to) == 1
       else pos.above(to) && pos.distX(to) == 1 && pos.distY(to) == 1
-    }
     case _ => canMove(pos, to)
   }
 }

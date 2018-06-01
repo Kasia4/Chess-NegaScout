@@ -21,8 +21,8 @@ object BoardUI {
 
   /**
     * Generate horizontal label
-    * @param separator
-    * @param space
+    * @param separator separator symbol
+    * @param space space symbol
     * @return
     */
   def horizontalLabel(separator: Char, space: Char): String = {

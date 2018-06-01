@@ -168,11 +168,10 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
     else {
       val piece = getAt(pos).get
       piece.ptype match {
-        case Pawn => {
+        case Pawn =>
           val dist = if (piece.moved) 1 else 2
           val dir = piece.color.direction
           pos.path(dir, dist).toList.span(isEmptyAt)._1
-        }
         case Knight => pos.lNeighbors()
         case King => pos.neighbors()
         case dir_piece: DirectionalType => scanDirs(dir_piece.dirs, pos)
@@ -210,7 +209,7 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
     possibleMoves(pos) ::: possibleCaptures(pos)
   }
 
-  private def scanDirs(dirs: List[Direction], start: Point): List[Point] = {
+  def scanDirs(dirs: List[Direction], start: Point): List[Point] = {
     (for (dir <- dirs) yield
       rect.pathToBorder(start, dir).span(isEmptyAt)._1).flatten
   }
@@ -239,7 +238,7 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
   def isOpponent(pos: Point, color: Color): Boolean = isOccupiedAt(pos) && getAt(pos).get.color == color.opponent
 
 
-  override def toString(): String = {
+  override def toString: String = {
     (for( y <- 0 to 7) yield
       (for( x <- 0 to 7) yield {
       val opt = getAt(Point(x, y))
@@ -316,7 +315,7 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
 
   /**
     * Check if given player have checkmate
-    * @param color
+    * @param color player's color
     * @return
     */
   def checkmateOf(color: Color): Boolean = {
@@ -350,8 +349,8 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
 object Board {
   val startBoard: Board = {
     val types = IndexedSeq(Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook)
-    val w_pawn = Piece(Pawn, White, false)
-    val b_pawn = Piece(Pawn, Black, false)
+    val w_pawn = Piece(Pawn, White, moved = false)
+    val b_pawn = Piece(Pawn, Black, moved = false)
     val row = Point(-1, 0).path(Right.vec, length = 8).toIndexedSeq
     val pieces =
       (for (i <- 0 to 7) yield List(

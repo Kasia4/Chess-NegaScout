@@ -56,7 +56,7 @@ object Field {
   val ActiveFrame: Char = 'x'
   val Background: Map[Color, Char] = List(White -> '.', Black -> ' ').toMap
 
-  def background(color: Color) = Background(color).toString
+  def background(color: Color): String = Background(color).toString
   def pieceSymbol(field_color: Color, piece: Option[Piece]): String =
     (if (piece.isEmpty) background(field_color) else piece.get.ptype.symbol).toString
   def baseSymbol(field_color: Color, piece: Option[Piece]): String =

@@ -1,7 +1,5 @@
 package chess
 
-import scala.collection
-
 case class Point(x: Int, y: Int) {
 
   def +(other: Point): Point = {

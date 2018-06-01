@@ -6,9 +6,9 @@ import game.Prompt
 object UI {
   /**
     * Print board and prompt for player
-    * @param game_state
-    * @param active_fiedls
-    * @param prompt
+    * @param game_state game state to display
+    * @param active_fiedls list of active fields
+    * @param prompt prompt for user
     */
   def displayGame(game_state: GameState,
                   active_fiedls: Set[Point] = Set.empty[Point],
