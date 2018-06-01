@@ -306,6 +306,9 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
     else possibleCapturesOf(getAt(pos).get.color.opponent).exists(_.to == pos)
   }
 
+  def movesTo(pos: Point, color: Color): List[Move] = {
+    possibleMovesOf(color).filter(_.to == pos)
+  }
   /**
     * Checks if given player have check
     * @param color player's color
@@ -340,8 +343,22 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
           .exists(!_.checkOf(color))
 
       val attackers = attackers_pos.map(getAt(_).get)
+      println(attackers_pos.head)
+      println(attackers_pos.head.pointsBetween(kingPosition(color)))
+      val can_be_blocked = {
+        if (attackers_pos.size > 1) false
+        else {
+          attackers_pos.head
+            .pointsBetween(kingPosition(color))
+            .flatMap(movesTo(_, color))
+            .map(applyMove)
+            .map(_.get)
+            .exists(!_.checkOf(color))
+        }
+      }
 
-      !(can_escape || can_capture_attacker)
+      !(can_escape || can_capture_attacker || can_be_blocked)
+
     }
   }
 }

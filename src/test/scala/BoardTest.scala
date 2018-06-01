@@ -560,12 +560,13 @@ class BoardTest extends org.scalatest.FunSuite{
   }
 
   test("If check can be blocked, checkmateOf returns false") {
+    println("siema")
     assert(
       !Board()
         .add(
           List(
-            Point(5,7) -> Piece(Rook, White),
             Point(5,6) -> Piece(Rook, White),
+            Point(5,5) -> Piece(Rook, White),
             Point(3,0) -> Piece(Rook, Black),
             Point(7,7) -> Piece(King, Black),
             Point(0,7) -> Piece(Queen, White)

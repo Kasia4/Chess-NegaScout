@@ -17,7 +17,7 @@ case class NegaScout(heuristic: Heuristic, maxDepth: Int = 10) {
     * @return
     */
   def negaScoutIter(state: GameState, alpha: Double, beta: Double, depth: Int): (Double, Option[Move]) = {
-    if(state.isTerminated() || depth >= maxDepth)
+    if(state.isTerminated || depth >= maxDepth)
       (heuristic.countStateValue(state), None)
 
     val firstMove = state.possibleMoves().head
