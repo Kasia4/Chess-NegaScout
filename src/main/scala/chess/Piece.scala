@@ -1,5 +1,6 @@
 package chess
 
+
 sealed trait PieceType {
   val name: String
   val symbol: Char
