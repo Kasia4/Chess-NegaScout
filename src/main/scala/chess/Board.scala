@@ -216,7 +216,12 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
     * @return List of possible target fields
     */
   def allPossibleMoves(pos: Point): List[Point] = {
-    possibleMoves(pos) ::: possibleCaptures(pos)
+    val moves = possibleMoves(pos) ::: possibleCaptures(pos)
+    if (moves.nonEmpty) {
+      val color = getAt(pos).get.color
+      moves.map(Move(pos, _)).filter(!checkOfAfterMove(color, _)).map(_.to)
+    } else List.empty[Point]
+
   }
 
   def scanDirs(dirs: List[Direction], start: Point): List[Point] = {
@@ -326,6 +331,12 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
     possibleMovesOf(color).filter(_.to == pos)
   }
 
+
+  def checkOfAfterMove(color: Color, move: Move): Boolean = {
+    val after = applyMove(move)
+    if (after.isEmpty) false
+    else after.get.checkOf(color)
+  }
   /**
     * Checks if given player have check
     *
