@@ -8,6 +8,11 @@ trait Field{
   def content: IndexedSeq[String]
 }
 
+/**
+  * Generates inactive field visual representation
+  * @param color field's color
+  * @param piece Option with piece on field
+  */
 case class InactiveField(override val color: Color,
                          override val piece: Option[Piece] = None) extends Field {
   override def content: IndexedSeq[String] = {
@@ -24,6 +29,11 @@ case class InactiveField(override val color: Color,
   }
 }
 
+/**
+  * Generates active field visual representation
+  * @param color field's color
+  * @param piece Option with piece on field
+  */
 case class ActiveField(override val color: Color,
                        override val piece: Option[Piece] = None) extends Field {
   override def content: IndexedSeq[String] = {
