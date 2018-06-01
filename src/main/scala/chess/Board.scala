@@ -309,12 +309,14 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
   def movesTo(pos: Point, color: Color): List[Move] = {
     possibleMovesOf(color).filter(_.to == pos)
   }
+
   /**
     * Checks if given player have check
     * @param color player's color
     * @return
     */
   def checkOf(color: Color): Boolean = canBeCaptured(kingPosition(color))
+
 
   /**
     * Check if given player have checkmate
@@ -331,36 +333,31 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
           .map(applyMove)
           .map(_.get)
           .exists(!_.checkOf(color))
-
-      val attackers_pos = possibleCapturesOf(kingpos)
-        .map(_.from)
-
-      val can_capture_attacker =
-        attackers_pos
-          .flatMap(possibleCapturesOf)
-          .map(applyCapture)
-          .map(_.get)
-          .exists(!_.checkOf(color))
-
-      val attackers = attackers_pos.map(getAt(_).get)
-      println(attackers_pos.head)
-      println(attackers_pos.head.pointsBetween(kingPosition(color)))
-      val can_be_blocked = {
-        if (attackers_pos.size > 1) false
+      if (can_escape) false
+      else {
+        val attackers_pos = possibleCapturesOf(kingpos)
+          .map(_.from)
+        val can_capture_attacker =
+          attackers_pos
+            .flatMap(possibleCapturesOf)
+            .map(applyCapture)
+            .map(_.get)
+            .exists(!_.checkOf(color))
+        if (can_capture_attacker) false
         else {
-          attackers_pos.head
+          val attackers = attackers_pos.map(getAt(_).get)
+          println(attackers_pos.head)
+          println(attackers_pos.head.pointsBetween(kingPosition(color)))
+          if (attackers_pos.size > 1) true
+          else attackers_pos.head
             .pointsBetween(kingPosition(color))
             .flatMap(movesTo(_, color))
             .map(applyMove)
-            .map(_.get)
-            .exists(!_.checkOf(color))
+            .map(_.get).forall(_.checkOf(color))
+          }
         }
       }
-
-      !(can_escape || can_capture_attacker || can_be_blocked)
-
     }
-  }
 }
 
 object Board {
