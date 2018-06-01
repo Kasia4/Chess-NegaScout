@@ -9,11 +9,12 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
 
   /**
     * Add piece at given position
-    * @param pos field position
+    *
+    * @param pos   field position
     * @param piece adding piece
     * @return new board with added piece or none if error
     */
-  def add(pos: Point, piece: Piece):Option[Board] = {
+  def add(pos: Point, piece: Piece): Option[Board] = {
     if (isEmptyAt(pos))
       Some(Board(pieces + (pos -> piece)))
     else None
@@ -21,6 +22,7 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
 
   /**
     * Add pieces map to board
+    *
     * @param new_pieces adding pieces map
     * @return new board with added pieces or none if error
     */
@@ -31,11 +33,12 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
 
   /**
     * Replace piece at given position with given piece
-    * @param pos field position
+    *
+    * @param pos   field position
     * @param piece new piece
     * @return new board with replace piece or none if error
     */
-  def replace(pos: Point, piece: Piece):Option[Board] = {
+  def replace(pos: Point, piece: Piece): Option[Board] = {
     if (rect.contains(pos))
       Some(Board(pieces + (pos -> piece)))
     else None
@@ -43,6 +46,7 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
 
   /**
     * Create board with undone move
+    *
     * @param move_log contains Move and option with captured piece
     * @return new board with undone move
     */
@@ -57,6 +61,7 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
 
   /**
     * Remove piece at given position
+    *
     * @param pos field position
     * @return Board without piece at given position
     */
@@ -64,6 +69,7 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
 
   /**
     * Checks if given position is empty
+    *
     * @param pos field position
     * @return
     */
@@ -71,6 +77,7 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
 
   /**
     * Checks if given position is occupied
+    *
     * @param pos field position
     * @return
     */
@@ -81,7 +88,7 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
     * @param pos field position
     * @return Option with piece from given field or None if field was empty
     */
-  def getAt(pos: Point):Option[Piece] = pieces.get(pos)
+  def getAt(pos: Point): Option[Piece] = pieces.get(pos)
 
   /**
     *
@@ -92,6 +99,7 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
 
   /**
     * Finds map of all pieces of given color
+    *
     * @param color pieces' color
     * @return map with positions and pieces
     */
@@ -99,6 +107,7 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
 
   /**
     * Finds map of all pieces of given type
+    *
     * @param pieceType pieces' type
     * @return map with positions and pieces
     */
@@ -106,7 +115,8 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
 
   /**
     * Apply move and checks if move is according to rules
-    * @param move applying move
+    *
+    * @param move  applying move
     * @param color player color
     * @return Pair with new board and log of executed move or None if move was illegal"
     */
@@ -130,6 +140,7 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
 
   /**
     * Apply move from field with piece to empty field
+    *
     * @param move applying move
     * @return Board with applied move or None if error
     */
@@ -143,6 +154,7 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
 
   /**
     * Apply move from field with piece to field with opponent piece
+    *
     * @param move field position
     * @return Board with applied capture or None if error
     */
@@ -160,6 +172,7 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
 
   /**
     * Finds moves can be executed from given field
+    *
     * @param pos field position
     * @return List of possible target fields
     */
@@ -181,6 +194,7 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
 
   /**
     * Finds captures can be executed from given field
+    *
     * @param pos field position
     * @return List of possible target fields
     */
@@ -192,7 +206,7 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
         case Pawn => {
           val dir = piece.color.direction
           List(Right.vec + dir + pos, Left.vec + dir + pos)
-        }.filter(isOpponent(_,piece.color))
+        }.filter(isOpponent(_, piece.color))
         case Knight => pos.lNeighbors().filter(isOpponent(_, piece.color))
         case King => pos.neighbors().filter(isOpponent(_, piece.color))
         case dir_piece: DirectionalType => scanOpponent(dir_piece.dirs, pos, piece.color)
@@ -202,6 +216,7 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
 
   /**
     * Finds moves and captures can be executed from given field
+    *
     * @param pos field position
     * @return List of possible target fields
     */
@@ -216,13 +231,14 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
 
   /**
     * Finds fields with opponent's pieces at paths from start field in given directions
-    * @param dirs searching directions list
+    *
+    * @param dirs  searching directions list
     * @param start start field position
     * @param color player color
     * @return list of found fields
     */
   def scanOpponent(dirs: List[Direction], start: Point, color: Color): List[Point] = {
-    val opts = for(dir <- dirs) yield {
+    val opts = for (dir <- dirs) yield {
       rect.findInDirection(start, dir, isOccupiedAt)
     }
     for (opt <- opts if opt.isDefined && isOpponent(opt.get, color)) yield opt.get
@@ -231,7 +247,8 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
 
   /**
     * Check if given field contains opponent piece
-    * @param pos field position
+    *
+    * @param pos   field position
     * @param color player color
     * @return True if given field contains
     */
@@ -239,17 +256,17 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
 
 
   override def toString: String = {
-    (for( y <- 0 to 7) yield
-      (for( x <- 0 to 7) yield {
-      val opt = getAt(Point(x, y))
-      if (opt.isEmpty) ' '
-      else opt.get.ptype.symbol
-    }).mkString + '\n').mkString
+    (for (y <- 0 to 7) yield
+      (for (x <- 0 to 7) yield {
+        val opt = getAt(Point(x, y))
+        if (opt.isEmpty) ' '
+        else opt.get.ptype.symbol
+      }).mkString + '\n').mkString
   }
 
   lazy val king_position: Map[Color, Point] = {
-    pieces.collect{
-      case(pos, Piece(King, color, _)) => color -> pos
+    pieces.collect {
+      case (pos, Piece(King, color, _)) => color -> pos
     }
   }
 
@@ -262,28 +279,31 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
 
   /**
     * Finds all captures that can be executed by given player
+    *
     * @param color player's color
     * @return
     */
   def possibleCapturesOf(color: Color): List[Move] = {
-    (for(piece <- ofColor(color)) yield {
-        possibleCaptures(piece._1).map(Move(piece._1, _))
+    (for (piece <- ofColor(color)) yield {
+      possibleCaptures(piece._1).map(Move(piece._1, _))
     }).flatten.toList
   }
 
   /**
     * Finds all moves that can be executed by given player
+    *
     * @param color player's color
     * @return
     */
   def possibleMovesOf(color: Color): List[Move] = {
-    (for(piece <- ofColor(color)) yield {
+    (for (piece <- ofColor(color)) yield {
       possibleMoves(piece._1).map(Move(piece._1, _))
     }).flatten.toList
   }
 
   /**
     * Finds all captures that can be executed from given position
+    *
     * @param pos field position
     * @return
     */
@@ -298,6 +318,7 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
 
   /**
     * Checks if piece on given field can be captured
+    *
     * @param pos field position
     * @return
     */
@@ -312,14 +333,43 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
 
   /**
     * Checks if given player have check
+    *
     * @param color player's color
     * @return
     */
   def checkOf(color: Color): Boolean = canBeCaptured(kingPosition(color))
 
 
+  def kingCanEscape(color: Color): Boolean = {
+    val kingpos = kingPosition(color)
+    possibleMoves(kingpos)
+      .map(Move(kingpos, _))
+      .map(applyMove)
+      .map(_.get)
+      .exists(!_.checkOf(color))
+  }
+
+  def kingAttackerCanBeCaptured(color: Color, attackers_pos: List[Point]): Boolean = {
+    attackers_pos
+      .flatMap(possibleCapturesOf)
+      .map(applyCapture)
+      .map(_.get)
+      .exists(!_.checkOf(color))
+  }
+
+  def kingAttackerCanBeBlocked(color: Color, attackers_pos: List[Point]): Boolean = {
+    if (attackers_pos.size > 1) true
+    else attackers_pos.head
+      .pointsBetween(kingPosition(color))
+      .flatMap(movesTo(_, color))
+      .map(applyMove)
+      .map(_.get).forall(_.checkOf(color))
+
+  }
+
   /**
     * Check if given player have checkmate
+    *
     * @param color player's color
     * @return
     */
@@ -327,37 +377,15 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
     if (!checkOf(color)) false
     else {
       val kingpos = kingPosition(color)
-      val can_escape =
-        possibleMoves(kingpos)
-          .map(Move(kingpos, _))
-          .map(applyMove)
-          .map(_.get)
-          .exists(!_.checkOf(color))
-      if (can_escape) false
+      if (kingCanEscape(color)) false
       else {
         val attackers_pos = possibleCapturesOf(kingpos)
           .map(_.from)
-        val can_capture_attacker =
-          attackers_pos
-            .flatMap(possibleCapturesOf)
-            .map(applyCapture)
-            .map(_.get)
-            .exists(!_.checkOf(color))
-        if (can_capture_attacker) false
-        else {
-          val attackers = attackers_pos.map(getAt(_).get)
-          println(attackers_pos.head)
-          println(attackers_pos.head.pointsBetween(kingPosition(color)))
-          if (attackers_pos.size > 1) true
-          else attackers_pos.head
-            .pointsBetween(kingPosition(color))
-            .flatMap(movesTo(_, color))
-            .map(applyMove)
-            .map(_.get).forall(_.checkOf(color))
-          }
-        }
+        if (kingAttackerCanBeCaptured(color, attackers_pos)) false
+        else kingAttackerCanBeBlocked(color, attackers_pos)
       }
     }
+  }
 }
 
 object Board {
