@@ -70,7 +70,7 @@ class BoardTest extends org.scalatest.FunSuite{
     val board = Board()
       .add(Point(4,1), Piece(Pawn, White, moved = false)).get
 
-    val unmoved_moves = board.possibleMoves(Point(4,1))
+    val unmoved_moves = board.possibleShifts(Point(4,1))
 
     assert(unmoved_moves.toSet == Set(Point(4,2), Point(4,3)))
   }
@@ -79,7 +79,7 @@ class BoardTest extends org.scalatest.FunSuite{
     val board = Board()
       .add(Point(7,1), Piece(Pawn, White)).get
 
-    val moved_moves = board.possibleMoves(Point(7,1))
+    val moved_moves = board.possibleShifts(Point(7,1))
 
     assert(moved_moves.toSet == Set(Point(7,2)))
   }
@@ -88,7 +88,7 @@ class BoardTest extends org.scalatest.FunSuite{
     val board = Board()
       .add(Point(4,7), Piece(Pawn, Black, moved = false)).get
 
-    val unmoved_moves = board.possibleMoves(Point(4,7))
+    val unmoved_moves = board.possibleShifts(Point(4,7))
 
     assert(unmoved_moves.toSet == Set(Point(4,6), Point(4,5)))
   }
@@ -97,7 +97,7 @@ class BoardTest extends org.scalatest.FunSuite{
     val board = Board()
       .add(Point(4,7), Piece(Pawn, Black)).get
 
-    val moves = board.possibleMoves(Point(4,7))
+    val moves = board.possibleShifts(Point(4,7))
 
     assert(moves.toSet == Set(Point(4,6)))
   }
@@ -107,7 +107,7 @@ class BoardTest extends org.scalatest.FunSuite{
       .add(Point(1,1), Piece(Pawn, White, moved = false)).get
       .add(Point(1,3), Piece(Rook, Black)).get
 
-    val moves = board.possibleMoves(Point(1,1))
+    val moves = board.possibleShifts(Point(1,1))
 
     assert(moves.toSet == Set(Point(1,2)))
   }
@@ -117,7 +117,7 @@ class BoardTest extends org.scalatest.FunSuite{
       .add(Point(1,1), Piece(Pawn, White, moved = false)).get
       .add(Point(1,2), Piece(Rook, Black)).get
 
-    val moves = board.possibleMoves(Point(1,1))
+    val moves = board.possibleShifts(Point(1,1))
 
     assert(moves.toSet == Set.empty[Point])
   }
@@ -127,7 +127,7 @@ class BoardTest extends org.scalatest.FunSuite{
       .add(Point(1,0), Piece(Knight, White)).get
       .add(Point(2,2), Piece(Queen, White)).get
 
-    val moves = board.possibleMoves(Point(1,0))
+    val moves = board.possibleShifts(Point(1,0))
     assert(moves.toSet == Set(Point(0,2), Point(3,1)))
   }
 
@@ -136,7 +136,7 @@ class BoardTest extends org.scalatest.FunSuite{
       .add(Point(1,1), Piece(Bishop, White)).get
       .add(Point(3,3), Piece(Pawn, Black)).get
 
-    val moves = board.possibleMoves(Point(1,1))
+    val moves = board.possibleShifts(Point(1,1))
     assert(moves.contains(Point(0,2)))
     assert(moves.contains(Point(2,2)))
     assert(!moves.contains(Point(3,3)))
@@ -148,7 +148,7 @@ class BoardTest extends org.scalatest.FunSuite{
       .add(Point(1,1), Piece(Rook, White)).get
       .add(Point(3,1), Piece(Pawn, Black)).get
 
-    val moves = board.possibleMoves(Point(1,1))
+    val moves = board.possibleShifts(Point(1,1))
     assert(moves.contains(Point(0,1)))
     assert(moves.contains(Point(1,7)))
     assert(!moves.contains(Point(7,1)))
@@ -160,7 +160,7 @@ class BoardTest extends org.scalatest.FunSuite{
       .add(Point(1,1), Piece(Queen, White)).get
       .add(Point(3,1), Piece(Pawn, Black)).get
 
-    val moves = board.possibleMoves(Point(1,1))
+    val moves = board.possibleShifts(Point(1,1))
     assert(moves.contains(Point(3,3)))
     assert(moves.contains(Point(1,7)))
     assert(!moves.contains(Point(7,1)))
@@ -172,7 +172,7 @@ class BoardTest extends org.scalatest.FunSuite{
       .add(Point(1,1), Piece(King, White)).get
       .add(Point(2,1), Piece(Pawn, Black)).get
 
-    val moves = board.possibleMoves(Point(1,1))
+    val moves = board.possibleShifts(Point(1,1))
 
     assert(moves.contains(Point(0,1)))
     assert(moves.contains(Point(1,2)))
@@ -268,7 +268,7 @@ class BoardTest extends org.scalatest.FunSuite{
     val to = Point(1,7)
     val board = Board()
       .add(from, piece).get
-      .applyMove(Move(from, to)).get
+      .applyShift(Move(from, to)).get
     assert(board.getAt(from).isEmpty)
   }
 
@@ -278,15 +278,15 @@ class BoardTest extends org.scalatest.FunSuite{
     val to = Point(1,7)
     val board = Board()
       .add(from, piece).get
-      .applyMove(Move(from, to)).get
+      .applyShift(Move(from, to)).get
     assert(board.getAt(to).get == piece)
   }
 
-  test("When origin field is empty, applyMove returns None") {
-    assert(Board().applyMove(Move(Point(1,1),Point(1,2))).isEmpty)
+  test("When origin field is empty, applyShift returns None") {
+    assert(Board().applyShift(Move(Point(1,1),Point(1,2))).isEmpty)
   }
 
-  test("When target field is occupied, applyMove returns None") {
+  test("When target field is occupied, applyShift returns None") {
     val from = Point(1,1)
     val to = Point(1,7)
     val piece = Piece(Queen, Black)
@@ -294,7 +294,7 @@ class BoardTest extends org.scalatest.FunSuite{
     assert(Board()
       .add(from, piece).get
       .add(to, piece2).get
-      .applyMove(Move(from, to)).isEmpty)
+      .applyShift(Move(from, to)).isEmpty)
   }
 
   test("After capturing, origin field is empty") {
@@ -560,7 +560,6 @@ class BoardTest extends org.scalatest.FunSuite{
   }
 
   test("If check can be blocked, checkmateOf returns false") {
-    println("siema")
     assert(
       !Board()
         .add(

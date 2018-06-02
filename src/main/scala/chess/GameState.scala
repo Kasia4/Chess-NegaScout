@@ -47,9 +47,6 @@ case class GameState(current_player: Color = White,
     * @return
     */
   def isTerminated: Boolean = {
-    Result match {
-      case _: Finished => true
-      case _: Pending => false
-    }
+    board.checkmateOf(current_player)
   }
 }

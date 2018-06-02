@@ -118,8 +118,8 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
   def applyLegalMove(move: Move, color: Color): Option[(Board, MoveLog)] = {
     if (getAt(move.from).isEmpty || getAt(move.from).get.color != color) None
     else {
-      if (possibleMoves(move.from).contains(move.to)) {
-        val after = applyMove(move).get
+      if (possibleShifts(move.from).contains(move.to)) {
+        val after = applyShift(move).get
         if (after.checkOf(color)) None
         else Some(after, MoveLog(move))
       }
@@ -139,7 +139,7 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
     * @param move applying move
     * @return Board with applied move or None if error
     */
-  def applyMove(move: Move): Option[Board] = {
+  def applyShift(move: Move): Option[Board] = {
     if (isOccupiedAt(move.from) && isEmptyAt(move.to)) {
       val moved = getAt(move.from).get
       this.remove(move.from).add(move.to, moved)
@@ -165,13 +165,17 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
     else None
   }
 
+  def applyMove(move: Move): Option[Board] = {
+    if (isOccupiedAt(move.to)) applyCapture(move)
+    else applyShift(move)
+  }
   /**
     * Finds moves can be executed from given field
     *
     * @param pos field position
     * @return List of possible target fields
     */
-  def possibleMoves(pos: Point): List[Point] = {
+  def possibleShifts(pos: Point): List[Point] = {
     if (isEmptyAt(pos)) List.empty[Point]
     else {
       val piece = getAt(pos).get
@@ -216,7 +220,7 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
     * @return List of possible target fields
     */
   def allPossibleMoves(pos: Point): List[Point] = {
-    val moves = possibleMoves(pos) ::: possibleCaptures(pos)
+    val moves = possibleShifts(pos) ::: possibleCaptures(pos)
     if (moves.nonEmpty) {
       val color = getAt(pos).get.color
       moves.map(Move(pos, _)).filter(!checkOfAfterMove(color, _)).map(_.to)
@@ -299,9 +303,9 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
     * @param color player's color
     * @return
     */
-  def possibleMovesOf(color: Color): List[Move] = {
+  def possibleShiftsOf(color: Color): List[Move] = {
     (for (piece <- ofColor(color)) yield {
-      possibleMoves(piece._1).map(Move(piece._1, _))
+      possibleShifts(piece._1).map(Move(piece._1, _))
     }).flatten.toList
   }
 
@@ -338,7 +342,7 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
   }
 
   def movesTo(pos: Point, color: Color): List[Move] = {
-    possibleMovesOf(color).filter(_.to == pos)
+    possibleShiftsOf(color).filter(_.to == pos)
   }
 
 
@@ -358,9 +362,9 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
 
   def kingCanEscape(color: Color): Boolean = {
     val kingpos = kingPosition(color)
-    possibleMoves(kingpos)
+    possibleShifts(kingpos)
       .map(Move(kingpos, _))
-      .map(applyMove)
+      .map(applyShift)
       .map(_.get)
       .exists(!_.checkOf(color))
   }
@@ -378,9 +382,8 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
     else attackers_pos.head
       .pointsBetween(kingPosition(color))
       .flatMap(movesTo(_, color))
-      .map(applyMove)
-      .map(_.get).forall(_.checkOf(color))
-
+      .map(applyShift)
+      .map(_.get).exists(!_.checkOf(color))
   }
 
   /**
@@ -398,7 +401,7 @@ case class Board (pieces: Map[Point, Piece] = Map(), rect: Rectangle = Rectangle
         val attackers_pos = possibleCapturesOf(kingpos)
           .map(_.from)
         if (kingAttackerCanBeCaptured(color, attackers_pos)) false
-        else kingAttackerCanBeBlocked(color, attackers_pos)
+        else !kingAttackerCanBeBlocked(color, attackers_pos)
       }
     }
   }

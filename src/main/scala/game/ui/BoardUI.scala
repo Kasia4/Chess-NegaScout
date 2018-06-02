@@ -72,7 +72,7 @@ object BoardUI {
   }
 
   def fieldColor(pos: Point): Color = {
-    if ((pos.x + pos.y)%2 == 0) White
+    if ((pos.x + pos.y)%2 == 1) White
     else Black
   }
 }
